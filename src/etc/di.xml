@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="integer-net_sansec-watch_update" xsi:type="object">IntegerNet\SansecWatch\Console\Command\SansecWatchUpdateCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Csp\Model\CompositePolicyCollector">
+        <arguments>
+            <argument name="collectors" xsi:type="array">
+                <item name="sansec" xsi:type="object" sortOrder="1000">IntegerNet\SansecWatch\Model\SansecPolicyCollector\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

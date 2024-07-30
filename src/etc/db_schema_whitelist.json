@@ -1,0 +1,12 @@
+{
+    "integernet_sansecwatch_policies": {
+        "column": {
+            "policy_id": true,
+            "directive": true,
+            "host": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

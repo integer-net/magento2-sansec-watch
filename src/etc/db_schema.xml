@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="integernet_sansecwatch_policies" engine="innodb">
+        <column xsi:type="int"     name="policy_id" identity="true"/>
+        <column xsi:type="varchar" name="directive" length="64" nullable="false"/>
+        <column xsi:type="varchar" name="host" length="255" nullable="false"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="policy_id" />
+        </constraint>
+    </table>
+</schema>
