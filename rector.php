@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 
+/** @noinspection PhpUnhandledExceptionInspection */
 return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
@@ -20,4 +22,7 @@ return RectorConfig::configure()
         instanceOf: true,
         earlyReturn: true,
         strictBooleans: true,
-    );
+    )
+    ->withSkip([
+        NewlineAfterStatementRector::class
+    ]);
