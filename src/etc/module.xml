@@ -3,6 +3,7 @@
     <module name="IntegerNet_SansecWatch">
         <sequence>
             <module name="Magento_Csp"/>
+            <module name="Magento_PageCache"/>
         </sequence>
     </module>
 </config>

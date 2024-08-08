@@ -12,13 +12,18 @@ use IntegerNet\SansecWatch\Model\Command\UpdatePolicies;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
 use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
+use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\FlagManager;
+use Magento\PageCache\Model\Cache\Type;
+use Magento\PageCache\Model\Config as PageCacheConfig;
 
 class PolicyUpdater
 {
     public function __construct(
         private readonly FlagManager $flagManager,
         private readonly UpdatePolicies $updatePolicies,
+        private readonly PageCacheConfig $pageCacheConfig,
+        private readonly TypeListInterface $cacheList,
     ) {
     }
 
@@ -39,6 +44,10 @@ class PolicyUpdater
 
         $this->updatePolicies->execute($policies);
         $this->saveNewFlagData($newPoliciesHash);
+
+        if ($this->pageCacheConfig->isEnabled()) {
+            $this->cacheList->invalidate(Type::TYPE_IDENTIFIER);
+        }
     }
 
     private function saveNewFlagData(string $hash): void

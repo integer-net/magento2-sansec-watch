@@ -53,7 +53,7 @@ $htmlId = $block->getHtmlId();
             }
 
             displayMessage('<?= $escaper->escapeJs(__('Policies updated')) ?>')
-            setTimeout(() => window.location.reload(), 500);
+            setTimeout(() => window.location.reload(), 250);
         }
 
         button.addEventListener('click', () => {
