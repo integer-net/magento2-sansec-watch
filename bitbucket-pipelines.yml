@@ -24,12 +24,6 @@ definitions:
           - ./vendor/bin/phpstan --no-progress --no-ansi
         caches:
           - composer
-    - step: &psalm
-        script:
-          - composer install
-          - ./vendor/bin/psalm --no-progress --monochrome
-        caches:
-          - composer
     - step: &rector
         script:
           - composer install
