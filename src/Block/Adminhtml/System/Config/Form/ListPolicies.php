@@ -18,7 +18,7 @@ class ListPolicies extends Field
     private ?string $htmlId = null;
 
     /**
-     * @phpstan-param array<array-key, mixed> $data
+     * @param array<array-key, mixed> $data
      */
     public function __construct(
         private readonly GetAllPolicies $getAllPolicies,

@@ -9,19 +9,37 @@ definitions:
     - step: &lint
         script:
           - composer install
-          - ./vendor/bin/parallel-lint --no-colors --no-progress src
+          - ./vendor/bin/parallel-lint --no-colors --no-progress --checkstyle src > checkstyle-lint.xml
+        after-script:
+          - pipe: atlassian/checkstyle-report:0.5.1
+            variables:
+              CHECKSTYLE_RESULT_PATTERN: '.*/checkstyle-lint.xml$'
+              CHECKSTYLE_REPORT_TITLE: 'Lint'
+              CHECKSTYLE_REPORT_ID: 'lint'
         caches:
           - composer
     - step: &ecs
         script:
           - composer install
-          - ./vendor/bin/ecs --no-progress-bar --no-interaction --no-ansi check src
+          - ./vendor/bin/ecs --no-progress-bar --no-interaction --no-ansi --output-format=checkstyle check > checkstyle-ecs.xml
+        after-script:
+          - pipe: atlassian/checkstyle-report:0.5.1
+            variables:
+              CHECKSTYLE_RESULT_PATTERN: '.*/checkstyle-ecs.xml$'
+              CHECKSTYLE_REPORT_TITLE: 'Easy Coding Standard'
+              CHECKSTYLE_REPORT_ID: 'ECS'
         caches:
           - composer
     - step: &phpstan
         script:
           - composer install
-          - ./vendor/bin/phpstan --no-progress --no-ansi
+          - ./vendor/bin/phpstan --no-progress --no-ansi --error-format=checkstyle > checkstyle-phpstan.xml
+        after-script:
+          - pipe: atlassian/checkstyle-report:0.5.1
+            variables:
+              CHECKSTYLE_RESULT_PATTERN: '.*/checkstyle-phpstan.xml$'
+              CHECKSTYLE_REPORT_TITLE: 'PHPStan'
+              CHECKSTYLE_REPORT_ID: 'phpstan'
         caches:
           - composer
     - step: &rector
