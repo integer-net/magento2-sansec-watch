@@ -15,4 +15,24 @@
             </argument>
         </arguments>
     </type>
+
+    <virtualType name="integerNetSansecWatchLogHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/integernet_sansecwatch.log</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="integerNetSansecWatchLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">integerNetSansecWatchLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="IntegerNet\SansecWatch\Cron\UpdatePolicies">
+        <arguments>
+            <argument name="logger" xsi:type="object">integerNetSansecWatchLogHandler</argument>
+        </arguments>
+    </type>
 </config>

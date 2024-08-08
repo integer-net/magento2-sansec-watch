@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="integernet">
+            <label>IntegerNet</label>
+        </tab>
+        <section id="integernet_sansecwatch" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="200" translate="label">
+            <label>Sansec Watch</label>
+            <tab>integernet</tab>
+            <resource>IntegerNet_SansecWatch::configuration</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>ID</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="update" translate="label" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Update Now</label>
+                    <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\UpdatePolicies</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

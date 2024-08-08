@@ -9,7 +9,7 @@ use CuyZ\Valinor\Mapper\Source\Exception\InvalidSource;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
-use RuntimeException;
+use IntegerNet\SansecWatch\Model\Exception\CouldNotFetchPoliciesException;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -25,6 +25,7 @@ class SansecWatchClient
 
     /**
      * @return list<Policy>
+     * @throws CouldNotFetchPoliciesException
      */
     public function fetchPolicies(Uuid $uuid): array
     {
@@ -32,17 +33,15 @@ class SansecWatchClient
             $responseJson = $this->fetchData($uuid);
 
             return $this->mapResponse($responseJson);
-        } catch (InvalidSource) {
-            // TODO: string is no valid json
-        } catch (MappingError) {
-            // TODO: Invalid json for mapping
-        } catch (TransportExceptionInterface) {
-            // TODO: unable to make/finish request
-        } catch (HttpExceptionInterface) {
-            // TODO: something else went wrong with the request
+        } catch (InvalidSource $invalidSource) {
+            throw CouldNotFetchPoliciesException::fromInvalidSource($invalidSource);
+        } catch (MappingError $mappingError) {
+            throw CouldNotFetchPoliciesException::fromMappingError($mappingError);
+        } catch (TransportExceptionInterface $transportException) {
+            throw CouldNotFetchPoliciesException::fromTransportException($transportException);
+        } catch (HttpExceptionInterface $httpException) {
+            throw CouldNotFetchPoliciesException::fromHttpException($httpException);
         }
-
-        return [];
     }
 
     /**
@@ -60,9 +59,7 @@ class SansecWatchClient
 
         $response = $this->httpClient->request('GET', $uri, $options);
 
-        return $response->getStatusCode() !== 200
-            ? throw new RuntimeException('SOMETHING WENT WRONG')
-            : $response->getContent();
+        return $response->getContent();
     }
 
     /**

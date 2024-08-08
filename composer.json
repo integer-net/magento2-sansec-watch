@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": ">=8.1.0",
-        "cuyz/valinor": "^1.12",
+        "cuyz/valinor": "^1.10",
         "magento/framework": ">=100.0.0",
         "magento/module-csp": "*",
         "symfony/http-client": "^6.2",

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace IntegerNet\SansecWatch\Service;
 
 use CuyZ\Valinor\Mapper\MappingError;
-use CuyZ\Valinor\Mapper\Source\Exception\InvalidSource;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use DateTimeImmutable;
 use IntegerNet\SansecWatch\Model\Command\UpdatePolicies;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
+use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
 use Magento\Framework\FlagManager;
 
 class PolicyUpdater
@@ -24,13 +24,15 @@ class PolicyUpdater
 
     /**
      * @param list<Policy> $policies
-     */
-    public function updatePolicies(array $policies): void
+     *
+     * @throws CouldNotUpdatePoliciesException
+*/
+    public function updatePolicies(array $policies, bool $force = false): void
     {
-        $newPoliciesHash = $this->calculateHash($policies);
+        $newPoliciesHash  = $this->calculateHash($policies);
         $existingFlagData = $this->getPoliciesFlagData();
 
-        if ($newPoliciesHash === $existingFlagData?->hash) {
+        if ($newPoliciesHash === $existingFlagData?->hash && $force === false) {
             $this->updateLastCheckedAt($existingFlagData);
             return;
         }
@@ -70,18 +72,21 @@ class PolicyUpdater
     {
         $flagData = $this->flagManager->getFlagData(SansecWatchFlag::CODE);
 
-        if (!is_string($flagData)) {
+        if (!is_array($flagData)) {
             return null;
         }
 
         try {
             return (new MapperBuilder())
+                ->allowSuperfluousKeys()
+                ->supportDateFormats(DATE_ATOM)
                 ->mapper()
                 ->map(
-                    sprintf('list<%s>', Policy::class),
-                    Source::json($flagData)
+                    SansecWatchFlag::class,
+                    Source::array($flagData)
+                        ->camelCaseKeys()
                 );
-        } catch (MappingError|InvalidSource) {
+        } catch (MappingError) {
             return null;
         }
     }

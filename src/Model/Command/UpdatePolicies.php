@@ -7,6 +7,7 @@ namespace IntegerNet\SansecWatch\Model\Command;
 use Exception;
 use IntegerNet\SansecWatch\Model\Config;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
+use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
 use Magento\Framework\App\ResourceConnection;
 
 class UpdatePolicies
@@ -20,6 +21,8 @@ class UpdatePolicies
 
     /**
      * @param list<Policy> $policies
+     *
+     * @throws CouldNotUpdatePoliciesException
      */
     public function execute(array $policies): void
     {
@@ -30,8 +33,12 @@ class UpdatePolicies
             $connection->delete(self::TABLE);
             $connection->insertMultiple(Config::POLICY_TABLE, array_map(fn (Policy $p): array => $p->toArray(), $policies));
             $connection->commit();
-        } catch (Exception) {
+        } catch (Exception $exception) {
             $connection->rollBack();
+
+            throw CouldNotUpdatePoliciesException::withMessage(
+                __('Could not update policies: %1', $exception->getMessage())
+            );
         }
     }
 }

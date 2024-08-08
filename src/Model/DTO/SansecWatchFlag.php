@@ -21,16 +21,16 @@ class SansecWatchFlag implements JsonSerializable
     /**
      * @phpstan-return array{
      *     hash: string,
-     *     last_checked_at: DateTimeImmutable,
-     *     last_updated_at: DateTimeImmutable
+     *     last_checked_at: string,
+     *     last_updated_at: string
      * }
      */
     public function jsonSerialize(): array
     {
         return [
             'hash' => $this->hash,
-            'last_checked_at' => $this->lastCheckedAt,
-            'last_updated_at' => $this->lastUpdatedAt,
+            'last_checked_at' => $this->lastCheckedAt->format(DATE_ATOM),
+            'last_updated_at' => $this->lastUpdatedAt->format(DATE_ATOM),
         ];
     }
 }

@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
+use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
+use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
@@ -26,6 +27,8 @@ return ECSConfig::configure()
     )
     ->withSkip([
         BinaryOperatorSpacesFixer::class,
+        CastSpacesFixer::class,
+        ClassAttributesSeparationFixer::class,
         GeneralPhpdocAnnotationRemoveFixer::class,
         LineLengthFixer::class,
         NotOperatorWithSuccessorSpaceFixer::class,

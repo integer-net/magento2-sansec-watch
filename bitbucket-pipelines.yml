@@ -1,0 +1,62 @@
+definitions:
+  steps:
+    - step: &normalize
+        script:
+          - composer install
+          - composer normalize --dry-run
+        caches:
+          - composer
+    - step: &lint
+        script:
+          - composer install
+          - ./vendor/bin/parallel-lint --no-colors --no-progress src
+        caches:
+          - composer
+    - step: &ecs
+        script:
+          - composer install
+          - ./vendor/bin/ecs --no-progress-bar --no-interaction --no-ansi check src
+        caches:
+          - composer
+    - step: &phpstan
+        script:
+          - composer install
+          - ./vendor/bin/phpstan --no-progress --no-ansi
+        caches:
+          - composer
+    - step: &psalm
+        script:
+          - composer install
+          - ./vendor/bin/psalm --no-progress --monochrome
+        caches:
+          - composer
+    - step: &rector
+        script:
+          - composer install
+          - ./vendor/bin/rector process --dry-run --no-ansi --no-progress-bar
+        caches:
+          - composer
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            <<: *normalize
+            name: PHP 8.1 Composer Normalize
+            image: 'integerhub/php:8.1-fpm-local'
+        - step:
+            <<: *lint
+            name: PHP 8.1 Lint
+            image: 'integerhub/php:8.1-fpm-local'
+        - step:
+            <<: *ecs
+            name: PHP 8.1 ECS
+            image: 'integerhub/php:8.1-fpm-local'
+        - step:
+            <<: *phpstan
+            name: PHP 8.1 PHPStan
+            image: 'integerhub/php:8.1-fpm-local'
+        - step:
+            <<: *rector
+            name: PHP 8.1 Rector
+            image: 'integerhub/php:8.1-fpm-local'

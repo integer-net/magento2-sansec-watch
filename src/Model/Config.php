@@ -4,16 +4,38 @@ declare(strict_types=1);
 
 namespace IntegerNet\SansecWatch\Model;
 
+use IntegerNet\SansecWatch\Model\Exception\InvalidConfigurationException;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Symfony\Component\Uid\Uuid;
 
 class Config
 {
     public const POLICY_TABLE = 'integernet_sansecwatch_policies';
 
-    public function getUuid(): Uuid
+    public const INTEGERNET_SANSEC_WATCH_GENERAL_ENABLED = 'integernet_sansecwatch/general/enabled';
+    public const INTEGERNET_SANSEC_WATCH_GENERAL_ID      = 'integernet_sansecwatch/general/id';
+
+    public function __construct(
+        private readonly ScopeConfigInterface $scopeConfig,
+    ) {
+    }
+
+    public function isEnabled(): bool
     {
-        // TODO: create configuration
-        // TODO: read from config
-        return Uuid::fromString('685769a2-38a4-4d06-a19a-67a528197f51');
+        return $this->scopeConfig->isSetFlag(self::INTEGERNET_SANSEC_WATCH_GENERAL_ENABLED);
+    }
+
+    /**
+     * @throws InvalidConfigurationException
+     */
+    public function getId(): Uuid
+    {
+        $id = $this->scopeConfig->getValue(self::INTEGERNET_SANSEC_WATCH_GENERAL_ID);
+
+        if (!Uuid::isValid($id)) {
+            throw InvalidConfigurationException::fromInvalidUuid($id);
+        }
+
+        return Uuid::fromString($id);
     }
 }
