@@ -1,0 +1,55 @@
+<?php
+
+declare(strict_types=1);
+
+use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ListPolicies;
+use Magento\Framework\Escaper;
+
+/** @var ListPolicies $block */
+/** @var Escaper $escaper */
+
+$htmlId = $block->getHtmlId();
+?>
+<style>
+    #row_<?= $escaper->escapeHtml($htmlId) ?> label,
+    #row_<?= $escaper->escapeHtml($htmlId) ?> .note,
+    #<?= $escaper->escapeHtml($htmlId) ?>_inherit {
+        display: none;
+    }
+
+    #row_<?= $escaper->escapeHtml($htmlId) ?> .data-grid td {
+        padding: 1rem 1rem;
+    }
+
+    .data-grid-th.directive {
+        width: 25%;
+    }
+</style>
+
+
+<table class="data-grid data-grid-draggable" data-role="grid">
+    <thead>
+    <tr>
+        <th class="data-grid-th directive">
+            <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Directive')) ?></span>
+        </th>
+        <th class="data-grid-th host">
+            <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Host')) ?></span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php $isOddRow = true; ?>
+    <?php foreach ($block->getPolicies() as $policy): ?>
+    <tr class="data-row <?= $escaper->escapeHtmlAttr($isOddRow ? '_odd-row' : '') ?>">
+        <td>
+            <div class="data-grid-cell-content"><?= $escaper->escapeHtml($policy->directive) ?></div>
+        </td>
+        <td>
+            <div class="data-grid-cell-content"><?= $escaper->escapeHtml($policy->host) ?></div>
+        </td>
+    </tr>
+    <?php $isOddRow = !$isOddRow ?>
+    <?php endforeach; ?>
+    </tbody>
+</table>

@@ -39,13 +39,11 @@ class SansecWatchUpdateCommand extends Command
                 name: self::OPTION_DRY_RUN,
                 shortcut: null,
                 mode: InputOption::VALUE_NONE,
-                default: false,
             )
             ->addOption(
                 name: self::OPTION_FORCE,
                 shortcut: null,
                 mode: InputOption::VALUE_NONE,
-                default: false,
             );
     }
 

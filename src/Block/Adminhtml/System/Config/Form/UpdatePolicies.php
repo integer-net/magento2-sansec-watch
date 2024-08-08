@@ -12,13 +12,13 @@ use Magento\Framework\Exception\LocalizedException;
 
 class UpdatePolicies extends Field
 {
+    private ?string $htmlId = null;
+
     protected $_template = 'IntegerNet_SansecWatch::system/config/button/update-policies.phtml';
 
     public function render(AbstractElement $element): string
     {
-        $element->unsScope()
-            ->unsCanUseWebsiteValue()
-            ->unsCanUseDefaultValue();
+        $this->htmlId = $element->getHtmlId();
 
         return parent::render($element);
     }
@@ -28,11 +28,16 @@ class UpdatePolicies extends Field
         return $this->getUrl('integernet_sansecwatch/action/update');
     }
 
+    public function getHtmlId(): string
+    {
+        return $this->htmlId ?? '';
+    }
+
     public function getButtonHtml(): string
     {
         try {
             $buttonData = [
-                'id' => 'update_policies_button',
+                'id' => $this->getHtmlId() . '_button',
                 'label' => __('Update Policies Now'),
             ];
 

@@ -8,12 +8,20 @@ use Magento\Framework\Escaper;
 /** @var UpdatePolicies $block */
 /** @var Escaper $escaper */
 
+$htmlId = $block->getHtmlId();
 ?>
+<style>
+    #row_<?= $escaper->escapeHtml($htmlId) ?> label,
+    #row_<?= $escaper->escapeHtml($htmlId) ?> .note,
+    #<?= $escaper->escapeHtml($htmlId) ?>_inherit {
+        display: none;
+    }
+</style>
 <script>
     require(['prototype'], function () {
-        const button = document.querySelector('#update_policies_button')
-        const loading = document.querySelector('#update_policies_loading')
-        const messages = document.querySelector('#update_policies_messages')
+        const button = document.querySelector('#<?= $escaper->escapeJs($htmlId) ?>_button')
+        const loading = document.querySelector('#<?= $escaper->escapeJs($htmlId) ?>_loading')
+        const messages = document.querySelector('#<?= $escaper->escapeJs($htmlId) ?>_messages')
         const url = new URL('<?= $escaper->escapeJs($block->getAjaxUrl()) ?>')
         url.searchParams.set('isAjax', 'true')
 
@@ -71,7 +79,7 @@ use Magento\Framework\Escaper;
 </script>
 <?= /** @noEscape */ $block->getButtonHtml() ?>
 
-<div id="update_policies_loading" style="margin-top: 2rem; display: none; align-items: center;">
+<div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_loading" style="margin-top: 2rem; display: none; align-items: center;">
     <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <style>
             .spinner_ajPY {
@@ -90,5 +98,5 @@ use Magento\Framework\Escaper;
     <span style="margin-left: 1rem">Fetching Policies...</span>
 </div>
 
-<div id="update_policies_messages" style="margin-top: 2rem; display: none">
+<div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_messages" style="margin-top: 2rem; display: none">
 </div>
