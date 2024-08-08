@@ -13,10 +13,13 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 class ListPolicies extends Field
 {
-    private ?string $htmlId = null;
-
     protected $_template = 'IntegerNet_SansecWatch::system/config/button/list-policies.phtml';
 
+    private ?string $htmlId = null;
+
+    /**
+     * @phpstan-param array<array-key, mixed> $data
+     */
     public function __construct(
         private readonly GetAllPolicies $getAllPolicies,
         Context $context,

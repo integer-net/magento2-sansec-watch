@@ -12,9 +12,9 @@ use Magento\Framework\Exception\LocalizedException;
 
 class UpdatePolicies extends Field
 {
-    private ?string $htmlId = null;
-
     protected $_template = 'IntegerNet_SansecWatch::system/config/button/update-policies.phtml';
+
+    private ?string $htmlId = null;
 
     public function render(AbstractElement $element): string
     {
