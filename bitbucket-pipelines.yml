@@ -48,6 +48,12 @@ definitions:
           - ./vendor/bin/rector process --dry-run --no-ansi --no-progress-bar
         caches:
           - composer
+    - step: &phpunit
+        script:
+          - composer install
+          - ./vendor/bin/phpunit --no-progress
+        caches:
+          - composer
 
 pipelines:
   default:
@@ -71,4 +77,8 @@ pipelines:
         - step:
             <<: *rector
             name: PHP 8.1 Rector
+            image: 'integerhub/php:8.1-fpm-local'
+        - step:
+            <<: *phpunit
+            name: PHP 8.1 PHPUnit
             image: 'integerhub/php:8.1-fpm-local'
