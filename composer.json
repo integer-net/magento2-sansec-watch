@@ -13,9 +13,9 @@
         "cuyz/valinor": "^1.10",
         "magento/framework": ">=100.0.0",
         "magento/module-csp": "*",
+        "symfony/clock": "^6.4",
         "symfony/http-client": "^6.2",
-        "symfony/uid": "^6.2",
-        "symfony/clock": "^6.4"
+        "symfony/uid": "^6.2"
     },
     "require-dev": {
         "bitexpert/phpstan-magento": "^0.31.0",
@@ -25,12 +25,12 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.11",
         "phpstan/phpstan-deprecation-rules": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-strict-rules": "^1.6",
+        "phpunit/phpunit": "^10.5",
         "rector/rector": "^1.2",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^12.3",
-        "phpunit/phpunit": "^10.5",
-        "phpstan/phpstan-phpunit": "^1.4"
+        "symplify/easy-coding-standard": "^12.3"
     },
     "repositories": [
         {
