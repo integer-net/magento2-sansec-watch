@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 
 /** @noinspection PhpUnhandledExceptionInspection */
 return RectorConfig::configure()
@@ -27,5 +28,6 @@ return RectorConfig::configure()
         phpunit           : true,
     )
     ->withSkip([
-        NewlineAfterStatementRector::class
+        NewlineAfterStatementRector::class,
+        PreferPHPUnitThisCallRector::class,
     ]);
