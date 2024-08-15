@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace IntegerNet\SansecWatch\Service;
 
-use CuyZ\Valinor\Mapper\MappingError;
-use CuyZ\Valinor\Mapper\Source\Source;
-use CuyZ\Valinor\MapperBuilder;
-use DateTimeImmutable;
-use IntegerNet\SansecWatch\Model\Command\UpdatePolicies;
+use IntegerNet\SansecWatch\Mapper\SansecWatchFlagMapper;
+use IntegerNet\SansecWatch\Model\Command\UpdatePolicies as UpdatePoliciesCommand;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
 use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
@@ -16,14 +13,17 @@ use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\FlagManager;
 use Magento\PageCache\Model\Cache\Type;
 use Magento\PageCache\Model\Config as PageCacheConfig;
+use Symfony\Component\Clock\ClockInterface;
 
 class PolicyUpdater
 {
     public function __construct(
+        private readonly SansecWatchFlagMapper $flagDataMapper,
         private readonly FlagManager $flagManager,
-        private readonly UpdatePolicies $updatePolicies,
+        private readonly UpdatePoliciesCommand $updatePoliciesCommand,
         private readonly PageCacheConfig $pageCacheConfig,
         private readonly TypeListInterface $cacheList,
+        private readonly ClockInterface $clock,
     ) {
     }
 
@@ -42,7 +42,7 @@ class PolicyUpdater
             return;
         }
 
-        $this->updatePolicies->execute($policies);
+        $this->updatePoliciesCommand->execute($policies);
         $this->saveNewFlagData($newPoliciesHash);
 
         if ($this->pageCacheConfig->isEnabled()) {
@@ -54,8 +54,8 @@ class PolicyUpdater
     {
         $newFlagData = new SansecWatchFlag(
             hash         : $hash,
-            lastCheckedAt: new DateTimeImmutable(),
-            lastUpdatedAt: new DateTimeImmutable(),
+            lastCheckedAt: $this->clock->now(),
+            lastUpdatedAt: $this->clock->now(),
         );
 
         $this->updateFlagData($newFlagData);
@@ -65,7 +65,7 @@ class PolicyUpdater
     {
         $newFlagData = new SansecWatchFlag(
             hash         : $sansecWatchFlag->hash,
-            lastCheckedAt: new DateTimeImmutable(),
+            lastCheckedAt: $this->clock->now(),
             lastUpdatedAt: $sansecWatchFlag->lastUpdatedAt,
         );
 
@@ -79,25 +79,14 @@ class PolicyUpdater
 
     private function getPoliciesFlagData(): ?SansecWatchFlag
     {
+        /** @var null|array{hash: string, lastCheckedAt: string, lastUpdatedAt: string} $flagData */
         $flagData = $this->flagManager->getFlagData(SansecWatchFlag::CODE);
 
         if (!is_array($flagData)) {
             return null;
         }
 
-        try {
-            return (new MapperBuilder())
-                ->allowSuperfluousKeys()
-                ->supportDateFormats(DATE_ATOM)
-                ->mapper()
-                ->map(
-                    SansecWatchFlag::class,
-                    Source::array($flagData)
-                        ->camelCaseKeys()
-                );
-        } catch (MappingError) {
-            return null;
-        }
+        return $this->flagDataMapper->map($flagData);
     }
 
     /**

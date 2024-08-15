@@ -13,6 +13,7 @@
         "cuyz/valinor": "^1.10",
         "magento/framework": ">=100.0.0",
         "magento/module-csp": "*",
+        "symfony/clock": "^6.4",
         "symfony/http-client": "^6.2",
         "symfony/uid": "^6.2"
     },
@@ -24,7 +25,9 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.11",
         "phpstan/phpstan-deprecation-rules": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-strict-rules": "^1.6",
+        "phpunit/phpunit": "^10.5",
         "rector/rector": "^1.2",
         "roave/security-advisories": "dev-latest",
         "symplify/easy-coding-standard": "^12.3"
@@ -46,6 +49,11 @@
             "registration.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "IntegerNet\\SansecWatch\\Test\\": "tests/"
+        }
+    },
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
@@ -58,11 +66,14 @@
         "ecs-fix": "ecs check src --fix",
         "lint": "parallel-lint src",
         "phpstan": "phpstan",
+        "phpunit": "phpunit",
         "rector": "rector process --dry-run",
-        "static-check": [
+        "test": [
             "@lint",
             "@ecs",
-            "@phpstan"
+            "@phpstan",
+            "@phpunit",
+            "@rector"
         ]
     }
 }
