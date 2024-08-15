@@ -31,7 +31,11 @@ class UpdatePolicies
         try {
             $connection->beginTransaction();
             $connection->delete(self::TABLE);
-            $connection->insertMultiple(Config::POLICY_TABLE, array_map(fn (Policy $p): array => $p->toArray(), $policies));
+
+            if ($policies !== []) {
+                $connection->insertMultiple(Config::POLICY_TABLE, array_map(fn (Policy $p): array => $p->toArray(), $policies));
+            }
+
             $connection->commit();
         } catch (Exception $exception) {
             $connection->rollBack();
