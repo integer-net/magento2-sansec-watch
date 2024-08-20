@@ -29,6 +29,13 @@
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ListPolicies</frontend_model>
                 </field>
             </group>
+            <group id="fpc" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>Full Page Cache</label>
+                <field id="mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Action after policy update</label>
+                    <source_model>IntegerNet\SansecWatch\Model\Config\Source\FpcMode</source_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>
