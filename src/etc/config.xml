@@ -5,6 +5,9 @@
             <general>
                 <enabled>0</enabled>
             </general>
+            <fpc>
+                <mode>invalidate</mode>
+            </fpc>
         </integernet_sansecwatch>
     </default>
 </config>

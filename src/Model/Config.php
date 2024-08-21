@@ -14,6 +14,7 @@ class Config
 
     public const INTEGERNET_SANSEC_WATCH_GENERAL_ENABLED = 'integernet_sansecwatch/general/enabled';
     public const INTEGERNET_SANSEC_WATCH_GENERAL_ID      = 'integernet_sansecwatch/general/id';
+    public const INTEGERNET_SANSEC_WATCH_FPC_MODE        = 'integernet_sansecwatch/fpc/mode';
 
     public function __construct(
         private readonly ScopeConfigInterface $scopeConfig,
@@ -37,5 +38,12 @@ class Config
         }
 
         return Uuid::fromString($id);
+    }
+
+    public function getFpcMode(): FpcMode
+    {
+        $mode = $this->scopeConfig->getValue(self::INTEGERNET_SANSEC_WATCH_FPC_MODE);
+
+        return FpcMode::tryFrom($mode) ?? FpcMode::NONE;
     }
 }

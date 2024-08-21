@@ -9,10 +9,7 @@ use IntegerNet\SansecWatch\Model\Command\UpdatePolicies as UpdatePoliciesCommand
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
 use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
-use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\FlagManager;
-use Magento\PageCache\Model\Cache\Type;
-use Magento\PageCache\Model\Config as PageCacheConfig;
 use Symfony\Component\Clock\ClockInterface;
 
 class PolicyUpdater
@@ -21,9 +18,8 @@ class PolicyUpdater
         private readonly SansecWatchFlagMapper $flagDataMapper,
         private readonly FlagManager $flagManager,
         private readonly UpdatePoliciesCommand $updatePoliciesCommand,
-        private readonly PageCacheConfig $pageCacheConfig,
-        private readonly TypeListInterface $cacheList,
         private readonly ClockInterface $clock,
+        private readonly UpdateFpc $updateFpc,
     ) {
     }
 
@@ -44,10 +40,7 @@ class PolicyUpdater
 
         $this->updatePoliciesCommand->execute($policies);
         $this->saveNewFlagData($newPoliciesHash);
-
-        if ($this->pageCacheConfig->isEnabled()) {
-            $this->cacheList->invalidate(Type::TYPE_IDENTIFIER);
-        }
+        $this->updateFpc->execute();
     }
 
     private function saveNewFlagData(string $hash): void

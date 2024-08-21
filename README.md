@@ -28,6 +28,10 @@ a collector to this class, which will read the policies from the database table 
 Once policies are fetched from Sansec Watch, the result will be hashed and further updates are only executed, if the
 newly fetched policies differ from the existing ones. (This is handled via the entry `integernet_sansecwatch` in the `flag` table)
 
+### Full Page Cache (FPC)
+
+After policies are updated (either by an updated list from sansec watch or by force), the FPC will be, depending on the configuration either cleared, invalidated or ignored.
+
 ## Usage
 
 ### Backend
