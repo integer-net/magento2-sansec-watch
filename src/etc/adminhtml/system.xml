@@ -24,7 +24,11 @@
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\UpdatePolicies</frontend_model>
                 </field>
-                <field id="policies_list" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="last_dates_checked" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Update Now</label>
+                    <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Dates</frontend_model>
+                </field>
+                <field id="policies_list" translate="note" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ListPolicies</frontend_model>
                 </field>

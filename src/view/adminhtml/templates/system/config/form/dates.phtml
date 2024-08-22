@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Dates;
+use Magento\Framework\Escaper;
+
+/** @var Dates $block */
+/** @var Escaper $escaper */
+
+$htmlId = $block->getHtmlId();
+?>
+<style>
+    label[for="<?= $escaper->escapeHtml($htmlId) ?>"],
+    label[for="<?= $escaper->escapeHtml($htmlId) ?>_inherit"],
+    #row_<?= $escaper->escapeHtml($htmlId) ?> .note,
+    #<?= $escaper->escapeHtml($htmlId) ?>_inherit {
+        display: none;
+    }
+</style>
+
+<div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_last_checked_at" style="color: #808080; margin-bottom: 0.25rem">
+    <span class="<?= $escaper->escapeHtmlAttr($htmlId) ?>_last_checked_at_label" style="display: inline-block; width: 180px;">
+        <?= $escaper->escapeHtml(__('Last checked for updates')) ?>
+    </span>
+    <span class="<?= $escaper->escapeHtmlAttr($htmlId) ?>_last_checked_at_value">
+        <?= $escaper->escapeHtml($block->getLastCheckedAtDate()) ?>
+    </span>
+</div>
+<div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_last_updated_at" style="color: #808080; margin-bottom: 0.25rem">
+    <span class="<?= $escaper->escapeHtmlAttr($htmlId) ?>_last_updated_at_label" style="display: inline-block; width: 180px;">
+        <?= $escaper->escapeHtml(__('Last update of policies')) ?>
+    </span>
+    <span class="<?= $escaper->escapeHtmlAttr($htmlId) ?>_last_updated_at_value">
+        <?= $escaper->escapeHtml($block->getLastUpdatedAtDate()) ?>
+    </span>
+</div>

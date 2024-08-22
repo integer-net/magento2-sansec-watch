@@ -43,7 +43,7 @@ class Update extends Action
                 ->create()
                 ->fetchPolicies($uuid);
 
-            $this->policyUpdater->updatePolicies($policies, true);
+            $this->policyUpdater->updatePolicies($policies);
         } catch (LocalizedException $localizedException) {
             return $result->setData([
                 'success' => false,
