@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\UpdatePolicies;
 use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 /** @var UpdatePolicies $block */
 /** @var Escaper $escaper */
+/** @var SecureHtmlRenderer $secureRenderer */
 
 $htmlId = $block->getHtmlId();
 ?>
@@ -17,12 +19,12 @@ $htmlId = $block->getHtmlId();
         display: none;
     }
 </style>
-<script>
+<?php $scriptString = <<<SCRIPT
     require(['prototype'], function () {
-        const button = document.querySelector('#<?= $escaper->escapeJs($htmlId) ?>_button')
-        const loading = document.querySelector('#<?= $escaper->escapeJs($htmlId) ?>_loading')
-        const messages = document.querySelector('#<?= $escaper->escapeJs($htmlId) ?>_messages')
-        const url = new URL('<?= $escaper->escapeJs($block->getAjaxUrl()) ?>')
+        const button = document.querySelector('#{$escaper->escapeJs($htmlId)}_button')
+        const loading = document.querySelector('#{$escaper->escapeJs($htmlId)}_loading')
+        const messages = document.querySelector('#{$escaper->escapeJs($htmlId)}_messages')
+        const url = new URL('{$escaper->escapeJs($block->getAjaxUrl())}')
         url.searchParams.set('isAjax', 'true')
 
         const showMessages = () => messages.style.display = 'block'
@@ -33,8 +35,8 @@ $htmlId = $block->getHtmlId();
         const disableButton = () => button.disabled = true
         const displayMessage = (message, error = false) => {
             messages.innerHTML = error
-                ? `<span style="color: red; font-weight: bold">${message}</span>`
-                : `<span>${message}</span>`
+                ? `<span style="color: red; font-weight: bold">\${message}</span>`
+                : `<span>\${message}</span>`
 
             showMessages()
         }
@@ -52,7 +54,7 @@ $htmlId = $block->getHtmlId();
                 return
             }
 
-            displayMessage('<?= $escaper->escapeJs(__('Policies updated')) ?>')
+            displayMessage('{$escaper->escapeJs(__('Policies updated'))}')
             setTimeout(() => window.location.reload(), 250);
         }
 
@@ -76,7 +78,10 @@ $htmlId = $block->getHtmlId();
                 .catch(error => console.error(error))
         })
     });
-</script>
+SCRIPT;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>
+
 <?= /** @noEscape */ $block->getButtonHtml() ?>
 
 <div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_loading" style="margin-top: 2rem; display: none; align-items: center;">

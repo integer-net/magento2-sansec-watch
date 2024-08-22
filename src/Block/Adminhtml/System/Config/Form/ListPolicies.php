@@ -13,7 +13,7 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 class ListPolicies extends Field
 {
-    protected $_template = 'IntegerNet_SansecWatch::system/config/button/list-policies.phtml';
+    protected $_template = 'IntegerNet_SansecWatch::system/config/form/list-policies.phtml';
 
     private ?string $htmlId = null;
 
