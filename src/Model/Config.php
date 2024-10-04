@@ -46,4 +46,9 @@ class Config
 
         return FpcMode::tryFrom($mode) ?? FpcMode::NONE;
     }
+
+    public function getApiUrl(): string
+    {
+        return 'https://sansec.watch/api/magento/{id}.json';
+    }
 }

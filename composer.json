@@ -15,7 +15,8 @@
         "magento/module-csp": "*",
         "symfony/clock": "^6.4",
         "symfony/http-client": "^6.2",
-        "symfony/uid": "^6.2"
+        "symfony/uid": "^6.2",
+        "beberlei/assert": "^3.3"
     },
     "require-dev": {
         "bitexpert/phpstan-magento": "^0.31.0",

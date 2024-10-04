@@ -13,6 +13,7 @@ use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
 use IntegerNet\SansecWatch\Service\PolicyUpdater;
 use IntegerNet\SansecWatch\Service\UpdateFpc;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\FlagManager;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -42,6 +43,7 @@ class PolicyUpdaterTest extends TestCase
         $this->flagManager    = self::createMock(FlagManager::class);
         $this->updatePolicies = self::createMock(UpdatePolicies::class);
         $this->updateFpc      = self::createMock(UpdateFpc::class);
+        $eventManager         = self::createStub(ManagerInterface::class);
 
         $this->policyUpdater = new PolicyUpdater(
             $this->flagDataMapper,
@@ -49,6 +51,7 @@ class PolicyUpdaterTest extends TestCase
             $this->updatePolicies,
             $this->clock,
             $this->updateFpc,
+            $eventManager,
         );
     }
 
