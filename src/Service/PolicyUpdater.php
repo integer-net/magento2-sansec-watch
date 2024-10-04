@@ -8,7 +8,9 @@ use IntegerNet\SansecWatch\Mapper\SansecWatchFlagMapper;
 use IntegerNet\SansecWatch\Model\Command\UpdatePolicies as UpdatePoliciesCommand;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
+use IntegerNet\SansecWatch\Model\Event\FetchedPolicies;
 use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\FlagManager;
 use Symfony\Component\Clock\ClockInterface;
 
@@ -20,6 +22,7 @@ class PolicyUpdater
         private readonly UpdatePoliciesCommand $updatePoliciesCommand,
         private readonly ClockInterface $clock,
         private readonly UpdateFpc $updateFpc,
+        private readonly ManagerInterface $eventManager,
     ) {
     }
 
@@ -27,13 +30,24 @@ class PolicyUpdater
      * @param list<Policy> $policies
      *
      * @throws CouldNotUpdatePoliciesException
-*/
+     */
     public function updatePolicies(array $policies, bool $force = false): void
     {
+        $fetchedPolicies = new FetchedPolicies($policies);
+        $this->eventManager->dispatch('integernet_sansec_watch_update_policies_before', [
+            'fetched_policies' => $fetchedPolicies,
+        ]);
+        $policies = $fetchedPolicies->getPolicies();
+
         $newPoliciesHash  = $this->calculateHash($policies);
         $existingFlagData = $this->getPoliciesFlagData();
 
         if ($newPoliciesHash === $existingFlagData?->hash && $force === false) {
+            $this->eventManager->dispatch('integernet_sansec_watch_update_policies_skipped', [
+                'fetched_policies' => $fetchedPolicies,
+                'policies_hash'    => $existingFlagData->hash,
+            ]);
+
             $this->updateLastCheckedAt($existingFlagData);
             return;
         }
@@ -41,6 +55,11 @@ class PolicyUpdater
         $this->updatePoliciesCommand->execute($policies);
         $this->saveNewFlagData($newPoliciesHash);
         $this->updateFpc->execute();
+
+        $this->eventManager->dispatch('integernet_sansec_watch_update_policies_after', [
+            'fetched_policies'  => $fetchedPolicies,
+            'new_policies_hash' => $newPoliciesHash,
+        ]);
     }
 
     private function saveNewFlagData(string $hash): void

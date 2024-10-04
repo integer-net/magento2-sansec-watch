@@ -9,6 +9,7 @@ use IntegerNet\SansecWatch\Model\Config;
 use IntegerNet\SansecWatch\Model\FpcMode;
 use IntegerNet\SansecWatch\Service\UpdateFpc;
 use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\PageCache\Model\Config as PageCacheConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

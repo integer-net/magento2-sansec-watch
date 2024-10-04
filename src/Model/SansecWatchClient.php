@@ -8,18 +8,21 @@ use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Exception\InvalidSource;
 use IntegerNet\SansecWatch\Mapper\PolicyMapper;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
+use IntegerNet\SansecWatch\Model\Event\FetchedPolicies;
 use IntegerNet\SansecWatch\Model\Exception\CouldNotFetchPoliciesException;
+use Magento\Framework\Event\ManagerInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use function sprintf;
 
 class SansecWatchClient
 {
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly PolicyMapper $policyMapper,
+        private readonly ManagerInterface $eventManager,
+        private readonly Config $config,
     ) {
     }
 
@@ -32,7 +35,7 @@ class SansecWatchClient
         try {
             $responseJson = $this->fetchData($uuid);
 
-            return $this->policyMapper->map($responseJson);
+            $policies = $this->policyMapper->map($responseJson);
         } catch (InvalidSource $invalidSource) {
             throw CouldNotFetchPoliciesException::fromInvalidSource($invalidSource);
         } catch (MappingError $mappingError) {
@@ -42,6 +45,16 @@ class SansecWatchClient
         } catch (HttpExceptionInterface $httpException) {
             throw CouldNotFetchPoliciesException::fromHttpException($httpException);
         }
+
+        $fetchedPolicies = new FetchedPolicies($policies);
+        $this->eventManager->dispatch(
+            'integernet_sansec_watch_fetched_policies',
+            [
+                'fetched_policies' => $fetchedPolicies,
+            ]
+        );
+
+        return $fetchedPolicies->getPolicies();
     }
 
     /**
@@ -50,7 +63,12 @@ class SansecWatchClient
      */
     private function fetchData(Uuid $uuid): string
     {
-        $uri     = sprintf('https://sansec.watch/api/magento/%s.json', $uuid->toRfc4122());
+        $uri = str_replace(
+            '{id}',
+            $uuid->toRfc4122(),
+            $this->config->getApiUrl()
+        );
+
         $options = [
             'headers' => [
                 'Accept' => 'application/json',
