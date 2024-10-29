@@ -5,9 +5,6 @@ This module allows the integration CSP rules from Sansec Watch (https://sansec.w
 ## Setup
 
 ```shell
-# If the project is not already using packages.integer-net.de:
-bin/composer config repositories.integer-net composer https://packages.integer-net.de/
-
 bin/composer require integer-net/magento2-sansec-watch
 bin/magento module:enable IntegerNet_SansecWatch
 bin/magento setup:upgrade
