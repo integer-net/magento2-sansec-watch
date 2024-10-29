@@ -1,6 +1,7 @@
 {
     "name": "integer-net/magento2-sansec-watch",
     "description": "Sansec Watch integration for Magento 2",
+    "license": "MIT",
     "type": "magento2-module",
     "authors": [
         {
