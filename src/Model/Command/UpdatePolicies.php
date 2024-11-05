@@ -12,8 +12,6 @@ use Magento\Framework\App\ResourceConnection;
 
 class UpdatePolicies
 {
-    private const TABLE = 'integernet_sansecwatch_policies';
-
     public function __construct(
         private readonly ResourceConnection $resourceConnection,
     ) {
@@ -27,13 +25,14 @@ class UpdatePolicies
     public function execute(array $policies): void
     {
         $connection = $this->resourceConnection->getConnection('write');
+        $tableName = $connection->getTableName(Config::POLICY_TABLE);
 
         try {
             $connection->beginTransaction();
-            $connection->delete(self::TABLE);
+            $connection->delete($tableName);
 
             if ($policies !== []) {
-                $connection->insertMultiple(Config::POLICY_TABLE, array_map(fn (Policy $p): array => $p->toArray(), $policies));
+                $connection->insertMultiple($tableName, array_map(fn (Policy $p): array => $p->toArray(), $policies));
             }
 
             $connection->commit();
