@@ -22,10 +22,11 @@ class GetAllPolicies
     public function execute(): array
     {
         $connection = $this->resourceConnection->getConnection('read');
+        $tableName  = $this->resourceConnection->getTableName(Config::POLICY_TABLE);
 
         try {
             $query = $connection->select()
-                ->from(Config::POLICY_TABLE);
+                ->from($tableName);
 
             $policies = $connection->fetchAll($query);
         } catch (Exception) {

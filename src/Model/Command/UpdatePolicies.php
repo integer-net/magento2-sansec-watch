@@ -25,7 +25,7 @@ class UpdatePolicies
     public function execute(array $policies): void
     {
         $connection = $this->resourceConnection->getConnection('write');
-        $tableName = $connection->getTableName(Config::POLICY_TABLE);
+        $tableName  = $this->resourceConnection->getTableName(Config::POLICY_TABLE);
 
         try {
             $connection->beginTransaction();
