@@ -38,7 +38,7 @@
 
     <type name="IntegerNet\SansecWatch\Cron\UpdatePolicies">
         <arguments>
-            <argument name="logger" xsi:type="object">integerNetSansecWatchLogHandler</argument>
+            <argument name="logger" xsi:type="object">integerNetSansecWatchLogger</argument>
         </arguments>
     </type>
 </config>
