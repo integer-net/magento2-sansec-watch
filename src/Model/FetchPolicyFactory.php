@@ -14,7 +14,7 @@ class FetchPolicyFactory
         private readonly bool $selfAllowed = true,
         private readonly bool $inlineAllowed = true,
         private readonly bool $evalAllowed = true,
-        private readonly bool $dynamicAllowed = true,
+        private readonly bool $dynamicAllowed = false,
         private readonly bool $eventHandlersAllowed = true,
     ) {
     }
