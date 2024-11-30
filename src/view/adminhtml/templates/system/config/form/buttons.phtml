@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\UpdatePolicies;
+use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Buttons;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
-/** @var UpdatePolicies $block */
+/** @var Buttons $block */
 /** @var Escaper $escaper */
 /** @var SecureHtmlRenderer $secureRenderer */
 
@@ -21,7 +21,8 @@ $htmlId = $block->getHtmlId();
 </style>
 <?php $scriptString = <<<SCRIPT
     require(['prototype'], function () {
-        const button = document.querySelector('#{$escaper->escapeJs($htmlId)}_button')
+        const updatePoliciesButton = document.querySelector('#{$escaper->escapeJs($htmlId)}_update_policies_button')
+        const visitDashboardButton = document.querySelector('#{$escaper->escapeJs($htmlId)}_visit_dashboard_button')
         const loading = document.querySelector('#{$escaper->escapeJs($htmlId)}_loading')
         const messages = document.querySelector('#{$escaper->escapeJs($htmlId)}_messages')
         const url = new URL('{$escaper->escapeJs($block->getAjaxUrl())}')
@@ -31,8 +32,8 @@ $htmlId = $block->getHtmlId();
         const hideMessages = () => messages.style.display = 'none'
         const showLoading = () => loading.style.display = 'flex'
         const hideLoading = () => loading.style.display = 'none'
-        const enableButton = () => button.disabled = false
-        const disableButton = () => button.disabled = true
+        const enableUpdatePoliciesButton = () => updatePoliciesButton.disabled = false
+        const disableUpdatePoliciesButton = () => updatePoliciesButton.disabled = true
         const displayMessage = (message, error = false) => {
             messages.innerHTML = error
                 ? `<span style="color: red; font-weight: bold">\${message}</span>`
@@ -47,7 +48,7 @@ $htmlId = $block->getHtmlId();
 
         const handleResponse = (response) => {
             hideLoading()
-            enableButton()
+            enableUpdatePoliciesButton()
 
             if (response.success !== true) {
                 displayMessage(response.message, true)
@@ -58,11 +59,11 @@ $htmlId = $block->getHtmlId();
             setTimeout(() => window.location.reload(), 250);
         }
 
-        button.addEventListener('click', () => {
+        updatePoliciesButton.addEventListener('click', () => {
             const body = new FormData()
             body.append('form_key', window.FORM_KEY);
 
-            disableButton()
+            disableUpdatePoliciesButton()
             showLoading()
             clearMessages()
 
@@ -82,7 +83,14 @@ SCRIPT;
 ?>
 <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>
 
-<?= /** @noEscape */ $block->getButtonHtml() ?>
+<?= /** @noEscape */ $block->getUpdatePoliciesButtonHtml() ?>
+
+<?php if ($block->canShowVisitDashboardAction()): ?>
+    <a href="<?= $escaper->escapeUrl($block->getVisitDashboardUrl()) ?>"
+       target="_blank"
+       rel="noreferrer noopener"
+       class="action-tertiary"><?= $escaper->escapeHtml(__('Go to Dashboard')) ?></a>
+<?php endif; ?>
 
 <div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_loading" style="margin-top: 2rem; display: none; align-items: center;">
     <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
