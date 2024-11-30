@@ -9,20 +9,30 @@ use Magento\Csp\Model\Policy\FetchPolicy;
 
 class FetchPolicyFactory
 {
+    public function __construct(
+        private readonly bool $noneAllowed = false,
+        private readonly bool $selfAllowed = true,
+        private readonly bool $inlineAllowed = true,
+        private readonly bool $evalAllowed = true,
+        private readonly bool $dynamicAllowed = true,
+        private readonly bool $eventHandlersAllowed = true,
+    ) {
+    }
+
     public function fromPolicyDto(Policy $policy): FetchPolicy
     {
         return new FetchPolicy(
             id: $policy->directive,
-            noneAllowed: false,
+            noneAllowed: $this->noneAllowed,
             hostSources: [$policy->host],
             schemeSources: [],
-            selfAllowed: true,
-            inlineAllowed: true,
-            evalAllowed: true,
+            selfAllowed: $this->selfAllowed,
+            inlineAllowed: $this->inlineAllowed,
+            evalAllowed: $this->evalAllowed,
             nonceValues: [],
             hashValues: [],
-            dynamicAllowed: true,
-            eventHandlersAllowed: true,
+            dynamicAllowed: $this->dynamicAllowed,
+            eventHandlersAllowed: $this->eventHandlersAllowed,
         );
     }
 }
