@@ -22,7 +22,7 @@
                 </field>
                 <field id="policies_update" translate="note" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Update Now</label>
-                    <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\UpdatePolicies</frontend_model>
+                    <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Buttons</frontend_model>
                 </field>
                 <field id="last_dates_checked" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Update Now</label>
