@@ -16,7 +16,7 @@
         "magento/framework": ">=100.0.0",
         "magento/module-csp": "*",
         "symfony/clock": "^6.4",
-        "symfony/http-client": "^6.2 || ^7.0",
+        "symfony/http-client": "^5.0 || ^6.0 || ^7.0",
         "symfony/uid": "^6.2"
     },
     "require-dev": {
