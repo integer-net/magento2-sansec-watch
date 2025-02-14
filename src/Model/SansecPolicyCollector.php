@@ -16,6 +16,7 @@ class SansecPolicyCollector implements PolicyCollectorInterface
         private readonly GetAllPolicies $getAllPolicies,
         private readonly FetchPolicyFactory $fetchPolicyFactory,
         private readonly State $state,
+        private readonly Config $config,
     ) {
     }
 
@@ -25,6 +26,10 @@ class SansecPolicyCollector implements PolicyCollectorInterface
     public function collect(array $defaultPolicies = []): array
     {
         if ($this->state->getAreaCode() === Area::AREA_ADMINHTML) {
+            return $defaultPolicies;
+        }
+
+        if (!$this->config->isEnabled()) {
             return $defaultPolicies;
         }
 
