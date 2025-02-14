@@ -24,6 +24,10 @@
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Buttons</frontend_model>
                 </field>
+                <field id="report_uri_check" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Report URL Check</label>
+                    <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ReportUriCheck</frontend_model>
+                </field>
                 <field id="last_dates_checked" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Dates</frontend_model>

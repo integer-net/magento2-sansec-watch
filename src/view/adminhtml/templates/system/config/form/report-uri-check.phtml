@@ -1,0 +1,59 @@
+<?php
+
+declare(strict_types=1);
+
+use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ReportUriCheck;
+use Magento\Framework\Escaper;
+
+/** @var ReportUriCheck $block */
+/** @var Escaper $escaper */
+
+$htmlId = $block->getHtmlId();
+?>
+<style>
+    label[for="<?= $escaper->escapeHtml($htmlId) ?>"],
+    label[for="<?= $escaper->escapeHtml($htmlId) ?>_inherit"],
+    #row_<?= $escaper->escapeHtml($htmlId) ?> .note,
+    #<?= $escaper->escapeHtml($htmlId) ?>_inherit {
+        display: none;
+    }
+
+    .report-uri-status {
+        background: #fffbbb;
+        border: none;
+        border-radius: 0;
+        color: #333333;
+        font-size: 1.4rem;
+        margin: 0 0 1px;
+        padding: 1.8rem 2rem;
+        position: relative;
+        text-shadow: none;
+    }
+
+    .report-uri-status.success {
+        background-color: rgba(121 162 46 / 0.7);
+    }
+
+    .report-uri-status-item {
+        margin-top: 1rem;
+    }
+</style>
+
+
+<div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_report_uri_check" style="color: #808080; margin-bottom: 0.25rem">
+    <?php if ($block->canShowMessage()): ?>
+        <div class="report-uri-status">
+            Report URI is not configured to use sansec watch
+            <br>
+            Configured Report URIs:
+            <?php foreach ($block->getConfigurationPaths() as $path): ?>
+                <?php $status = $block->getConfigurationStatus($path); ?>
+                <div class="report-uri-status-item">
+                    - <?= $escaper->escapeHtml($path) ?> = <?= $escaper->escapeHtml(json_encode($block->getReportUri($path))) ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+    <div class="report-uri-status success">Report URI is configured correctly.</div>
+    <?php endif; ?>
+</div>
