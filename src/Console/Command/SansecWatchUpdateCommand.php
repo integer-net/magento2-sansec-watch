@@ -11,6 +11,7 @@ use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
 use IntegerNet\SansecWatch\Model\Exception\InvalidConfigurationException;
 use IntegerNet\SansecWatch\Model\SansecWatchClientFactory;
 use IntegerNet\SansecWatch\Service\PolicyUpdater;
+use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -56,14 +57,14 @@ class SansecWatchUpdateCommand extends Command
 
         if (!$this->config->isEnabled()) {
             $io->warning('Update is disabled');
-            return self::SUCCESS;
+            return Cli::RETURN_SUCCESS;
         }
 
         try {
             $uuid = $this->config->getId();
         } catch (InvalidConfigurationException $invalidConfigurationException) {
             $io->error($invalidConfigurationException->getMessage());
-            return self::FAILURE;
+            return Cli::RETURN_SUCCESS;
         }
 
         try {
@@ -72,7 +73,7 @@ class SansecWatchUpdateCommand extends Command
                 ->fetchPolicies($uuid);
         } catch (CouldNotFetchPoliciesException $couldNotFetchPoliciesException) {
             $io->error($couldNotFetchPoliciesException->getMessage());
-            return self::FAILURE;
+            return Cli::RETURN_SUCCESS;
         }
 
         if ($isDryRun || $output->isVerbose()) {
@@ -88,9 +89,9 @@ class SansecWatchUpdateCommand extends Command
             $this->policyUpdater->updatePolicies($policies, $isForce);
         } catch (CouldNotUpdatePoliciesException $couldNotUpdatePoliciesException) {
             $io->error($couldNotUpdatePoliciesException->getMessage());
-            return self::FAILURE;
+            return Cli::RETURN_SUCCESS;
         }
 
-        return self::SUCCESS;
+        return Cli::RETURN_SUCCESS;
     }
 }
