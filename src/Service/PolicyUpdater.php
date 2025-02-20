@@ -106,6 +106,10 @@ class PolicyUpdater
      */
     private function calculateHash(array $policies): string
     {
+        usort($policies, static function (Policy $a, Policy $b) {
+            return ($a->directive . $a->host) <=> ($b->directive . $b->host);
+        });
+
         return hash('sha256', serialize($policies));
     }
 }
