@@ -1,0 +1,21 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method IntegerNet\\\\SansecWatch\\\\Block\\\\Adminhtml\\\\System\\\\Config\\\\Form\\\\Buttons\\:\\:__construct\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Block/Adminhtml/System/Config/Form/Buttons.php
+
+		-
+			message: "#^Method IntegerNet\\\\SansecWatch\\\\Block\\\\Adminhtml\\\\System\\\\Config\\\\Form\\\\ReportUriCheck\\:\\:getConfigurationPaths\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Block/Adminhtml/System/Config/Form/ReportUriCheck.php
+
+		-
+			message: "#^Only booleans are allowed in a negated boolean, string\\|null given\\.$#"
+			count: 1
+			path: src/Block/Adminhtml/System/Config/Form/ReportUriCheck.php
+
+		-
+			message: "#^Property IntegerNet\\\\SansecWatch\\\\Block\\\\Adminhtml\\\\System\\\\Config\\\\Form\\\\ReportUriCheck\\:\\:\\$configurationStatusMap type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Block/Adminhtml/System/Config/Form/ReportUriCheck.php

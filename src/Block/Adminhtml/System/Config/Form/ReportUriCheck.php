@@ -19,7 +19,7 @@ class ReportUriCheck extends Field
     private ?string $htmlId = null;
 
     private array $configurationStatusMap = [];
-    private ?Uuid $sansecWatchId;
+    private ?Uuid $sansecWatchId = null;
 
     /**
      * @param array<array-key, mixed> $data
@@ -101,7 +101,7 @@ class ReportUriCheck extends Field
 
     private function getConfiguredSansecId(): ?Uuid
     {
-        if (!isset($this->sansecWatchId)) {
+        if (!$this->sansecWatchId instanceof Uuid) {
             try {
                 $this->sansecWatchId = $this->config->getId();
             } catch (InvalidConfigurationException) {
