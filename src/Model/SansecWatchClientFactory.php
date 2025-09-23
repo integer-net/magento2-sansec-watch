@@ -21,7 +21,7 @@ class SansecWatchClientFactory
         ?HttpClientInterface $httpClient = null,
         ?PolicyMapper $policyMapper = null,
         ?ManagerInterface $eventManager = null,
-        ?Config $config = null
+        ?Config $config = null,
     ): SansecWatchClient {
         return new SansecWatchClient(
             $httpClient ?? HttpClient::create(),

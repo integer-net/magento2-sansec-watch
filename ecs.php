@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
@@ -14,8 +15,10 @@ return ECSConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
     ])
+    ->withPhpCsFixerSets(
+        perCS20: true,
+    )
     ->withPreparedSets(
-        psr12: true,
         symplify: true,
         arrays: true,
         comments: true,
@@ -32,4 +35,5 @@ return ECSConfig::configure()
         GeneralPhpdocAnnotationRemoveFixer::class,
         LineLengthFixer::class,
         NotOperatorWithSuccessorSpaceFixer::class,
+        SingleLineEmptyBodyFixer::class,
     ]);

@@ -35,7 +35,7 @@ class SansecPolicyCollector implements PolicyCollectorInterface
 
         $sansecWatchPolicies = array_map(
             $this->fetchPolicyFactory->fromPolicyDto(...),
-            $this->getAllPolicies->execute()
+            $this->getAllPolicies->execute(),
         );
 
         return array_merge($defaultPolicies, $sansecWatchPolicies);

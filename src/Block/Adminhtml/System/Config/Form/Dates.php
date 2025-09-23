@@ -31,7 +31,7 @@ class Dates extends Field
         private readonly TimezoneInterface $timezone,
         Context $context,
         array $data = [],
-        ?SecureHtmlRenderer $secureRenderer = null
+        ?SecureHtmlRenderer $secureRenderer = null,
     ) {
         parent::__construct($context, $data, $secureRenderer);
     }

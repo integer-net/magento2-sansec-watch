@@ -32,7 +32,8 @@
         "phpunit/phpunit": "^10.5",
         "rector/rector": "^1.2",
         "roave/security-advisories": "dev-latest",
-        "symplify/easy-coding-standard": "^12.3"
+        "symplify/easy-coding-standard": "^12.3",
+        "magento/magento-coding-standard": "^38.0"
     },
     "repositories": [
         {
@@ -60,7 +61,8 @@
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
             "magento/composer-dependency-version-audit-plugin": false,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": false
         }
     },
     "scripts": {

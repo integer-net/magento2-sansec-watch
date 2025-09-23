@@ -32,7 +32,7 @@ class UpdatePolicies
             $connection->delete($tableName);
 
             if ($policies !== []) {
-                $connection->insertMultiple($tableName, array_map(fn (Policy $p): array => $p->toArray(), $policies));
+                $connection->insertMultiple($tableName, array_map(fn(Policy $p): array => $p->toArray(), $policies));
             }
 
             $connection->commit();
@@ -40,7 +40,7 @@ class UpdatePolicies
             $connection->rollBack();
 
             throw CouldNotUpdatePoliciesException::withMessage(
-                __('Could not update policies: %1', $exception->getMessage())
+                __('Could not update policies: %1', $exception->getMessage()),
             );
         }
     }

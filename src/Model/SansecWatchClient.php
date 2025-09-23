@@ -51,7 +51,7 @@ class SansecWatchClient
             'integernet_sansec_watch_fetched_policies',
             [
                 'fetched_policies' => $fetchedPolicies,
-            ]
+            ],
         );
 
         return $fetchedPolicies->getPolicies();
@@ -66,7 +66,7 @@ class SansecWatchClient
         $uri = str_replace(
             '{id}',
             $uuid->toRfc4122(),
-            $this->config->getApiUrl()
+            $this->config->getApiUrl(),
         );
 
         $options = [

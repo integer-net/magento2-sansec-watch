@@ -28,7 +28,7 @@ class SansecWatchFlagMapper
                 ->map(
                     SansecWatchFlag::class,
                     Source::array($flagData)
-                        ->camelCaseKeys()
+                        ->camelCaseKeys(),
                 );
         } catch (MappingError) {
             return null;

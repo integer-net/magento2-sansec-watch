@@ -81,7 +81,7 @@ class SansecWatchUpdateCommand extends Command
 
             $io->table(
                 ['Directive', 'Host'],
-                array_map(fn (Policy $policy): array => $policy->toArray(), $policies)
+                array_map(fn(Policy $policy): array => $policy->toArray(), $policies),
             );
         }
 

@@ -16,7 +16,7 @@ class CouldNotFetchPoliciesException extends LocalizedException
 {
     public function __construct(
         Phrase $phrase,
-        public readonly ?Throwable $previous = null
+        public readonly ?Throwable $previous = null,
     ) {
         parent::__construct($phrase);
     }

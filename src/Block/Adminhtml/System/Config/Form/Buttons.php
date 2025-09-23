@@ -13,6 +13,7 @@ use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+
 use function sprintf;
 
 class Buttons extends Field
@@ -27,7 +28,7 @@ class Buttons extends Field
         private readonly Config $config,
         Context $context,
         array $data = [],
-        ?SecureHtmlRenderer $secureRenderer = null
+        ?SecureHtmlRenderer $secureRenderer = null,
     ) {
         parent::__construct($context, $data, $secureRenderer);
     }
@@ -58,8 +59,8 @@ class Buttons extends Field
             ];
 
             return $this->createButton()
-                        ->setData($buttonData)
-                        ->toHtml();
+                ->setData($buttonData)
+                ->toHtml();
         } catch (Exception) {
             return '';
         }

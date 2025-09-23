@@ -24,7 +24,7 @@ class PolicyMapper
             ->mapper()
             ->map(
                 sprintf('list<%s>', Policy::class),
-                Source::json($json)
+                Source::json($json),
             );
     }
 }

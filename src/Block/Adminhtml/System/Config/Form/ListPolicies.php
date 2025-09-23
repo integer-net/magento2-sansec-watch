@@ -24,7 +24,7 @@ class ListPolicies extends Field
         private readonly GetAllPolicies $getAllPolicies,
         Context $context,
         array $data = [],
-        ?SecureHtmlRenderer $secureRenderer = null
+        ?SecureHtmlRenderer $secureRenderer = null,
     ) {
         parent::__construct($context, $data, $secureRenderer);
     }

@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 namespace IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form;
 
-use DateTimeImmutable;
-use IntegerNet\SansecWatch\Mapper\SansecWatchFlagMapper;
 use IntegerNet\SansecWatch\Model\Config;
-use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
 use IntegerNet\SansecWatch\Model\Exception\InvalidConfigurationException;
-use IntlDateFormatter;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Magento\Framework\FlagManager;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Symfony\Component\Uid\Uuid;
 
@@ -35,7 +28,7 @@ class ReportUriCheck extends Field
         private readonly Config $config,
         Context $context,
         array $data = [],
-        ?SecureHtmlRenderer $secureRenderer = null
+        ?SecureHtmlRenderer $secureRenderer = null,
     ) {
         parent::__construct($context, $data, $secureRenderer);
     }
@@ -73,7 +66,7 @@ class ReportUriCheck extends Field
 
         return str_contains(
             $configuredReportUri,
-            $this->getConfiguredSansecId() . '.sansec.watch'
+            $this->getConfiguredSansecId() . '.sansec.watch',
         );
     }
 
@@ -101,6 +94,11 @@ class ReportUriCheck extends Field
         return false;
     }
 
+    protected function _getElementHtml(AbstractElement $element): string
+    {
+        return $this->_toHtml();
+    }
+
     private function getConfiguredSansecId(): ?Uuid
     {
         if (!isset($this->sansecWatchId)) {
@@ -112,10 +110,5 @@ class ReportUriCheck extends Field
         }
 
         return $this->sansecWatchId;
-    }
-
-    protected function _getElementHtml(AbstractElement $element): string
-    {
-        return $this->_toHtml();
     }
 }
