@@ -12,7 +12,7 @@ class FetchPolicyFactory
     public function __construct(
         private readonly bool $noneAllowed = false,
         private readonly bool $selfAllowed = true,
-        private readonly bool $inlineAllowed = true,
+        private readonly bool $inlineAllowed = false,
         private readonly bool $evalAllowed = true,
         private readonly bool $dynamicAllowed = false,
         private readonly bool $eventHandlersAllowed = true,
