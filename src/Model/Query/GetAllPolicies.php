@@ -11,6 +11,11 @@ use Magento\Framework\App\ResourceConnection;
 
 class GetAllPolicies
 {
+    /**
+     * @var list<Policy>|null
+     */
+    private ?array $policies = null;
+
     public function __construct(
         private readonly ResourceConnection $resourceConnection,
     ) {
@@ -20,6 +25,14 @@ class GetAllPolicies
      * @return list<Policy>
      */
     public function execute(): array
+    {
+        return $this->policies ??= $this->fetchPolicies();
+    }
+
+    /**
+     * @return list<Policy>
+     */
+    private function fetchPolicies(): array
     {
         $connection = $this->resourceConnection->getConnection('read');
         $tableName  = $this->resourceConnection->getTableName(Config::POLICY_TABLE);
