@@ -44,7 +44,7 @@ class Config
     {
         $mode = $this->scopeConfig->getValue(self::INTEGERNET_SANSEC_WATCH_FPC_MODE);
 
-        return FpcMode::tryFrom($mode) ?? FpcMode::NONE;
+        return FpcMode::tryFrom($mode) ?? FpcMode::None;
     }
 
     public function getApiUrl(): string

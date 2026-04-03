@@ -38,13 +38,12 @@ $htmlId = $block->getHtmlId();
     }
 </style>
 
-
 <div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_report_uri_check" style="color: #808080; margin-bottom: 0.25rem">
     <?php if ($block->canShowMessage()): ?>
         <div class="report-uri-status">
-            Report URI is not configured to use sansec watch
+            <?= $escaper->escapeHtml(__('Report URI is not configured to use sansec watch')) ?>
             <br>
-            Configured Report URIs:
+            <?= $escaper->escapeHtml(__('Configured Report URIs:')) ?>
             <?php foreach ($block->getConfigurationPaths() as $path): ?>
                 <?php $status = $block->getConfigurationStatus($path); ?>
                 <div class="report-uri-status-item">
@@ -53,6 +52,6 @@ $htmlId = $block->getHtmlId();
             <?php endforeach; ?>
         </div>
     <?php else: ?>
-    <div class="report-uri-status success">Report URI is configured correctly.</div>
+    <div class="report-uri-status success"><?= $escaper->escapeHtml(__('Report URI is configured correctly.')) ?></div>
     <?php endif; ?>
 </div>

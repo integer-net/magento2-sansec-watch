@@ -134,7 +134,7 @@ $shouldShowSearch       = !$noPoliciesAvailable;
         <?php if ($noPoliciesAvailable): ?>
             <tr class="no-policies-found _odd-row">
                 <td colspan="2">
-                    No policies found
+                    <?= $escaper->escapeHtml(__('No policies found')) ?>
                 </td>
             </tr>
         <?php endif; ?>
@@ -142,7 +142,7 @@ $shouldShowSearch       = !$noPoliciesAvailable;
         <?php if ($shouldShowSearch): ?>
             <tr class="search _odd-row">
                 <td colspan="2">
-                    <label for="integernet_sansec_watch_search" style="display: none">Search</label>
+                    <label for="integernet_sansec_watch_search" style="display: none"><?= $escaper->escapeHtml(__('Search')) ?></label>
                     <input name="integernet_sansec_watch_search" id="integernet_sansec_watch_search" type="text">
                 </td>
             </tr>

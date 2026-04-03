@@ -28,7 +28,7 @@ class SansecWatchFlag implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'hash' => $this->hash,
+            'hash'            => $this->hash,
             'last_checked_at' => $this->lastCheckedAt->format(DATE_ATOM),
             'last_updated_at' => $this->lastUpdatedAt->format(DATE_ATOM),
         ];

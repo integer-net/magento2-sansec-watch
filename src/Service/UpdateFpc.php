@@ -26,14 +26,14 @@ class UpdateFpc
         }
 
         $mode = $this->config->getFpcMode();
-        if ($mode === FpcMode::NONE) {
+        if ($mode === FpcMode::None) {
             return;
         }
 
         /** @noinspection PhpUncoveredEnumCasesInspection */
         match ($mode) {
-            FpcMode::CLEAR => $this->cacheList->cleanType(Type::TYPE_IDENTIFIER),
-            FpcMode::INVALIDATE => $this->cacheList->invalidate(Type::TYPE_IDENTIFIER),
+            FpcMode::Clear      => $this->cacheList->cleanType(Type::TYPE_IDENTIFIER),
+            FpcMode::Invalidate => $this->cacheList->invalidate(Type::TYPE_IDENTIFIER),
         };
     }
 }
