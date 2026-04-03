@@ -1,0 +1,29 @@
+"Update Policies Now","Update Policies Now"
+"Please enable updates first.","Please enable updates first."
+"Could not update policies: %1","Could not update policies: %1"
+"Response is not valid JSON: %1","Response is not valid JSON: %1"
+"Could not map response JSON to DTO: %1","Could not map response JSON to DTO: %1"
+"Could not fetch policies from sansec watch: %1","Could not fetch policies from sansec watch: %1"
+"Invalid ID provided: %1, expected UUID format","Invalid ID provided: %1, expected UUID format"
+"Do Nothing","Do Nothing"
+"Invalidate FPC","Invalidate FPC"
+"Clear FPC","Clear FPC"
+"Policies updated","Policies updated"
+"Go to Dashboard","Go to Dashboard"
+"Fetching Policies...","Fetching Policies..."
+"Last checked for updates","Last checked for updates"
+"Last update of policies","Last update of policies"
+Directive,Directive
+Host,Host
+"No policies found","No policies found"
+Search,Search
+"Show more","Show more"
+"Report URI is not configured to use sansec watch","Report URI is not configured to use sansec watch"
+"Configured Report URIs:","Configured Report URIs:"
+"Report URI is configured correctly.","Report URI is configured correctly."
+"Sansec Watch","Sansec Watch"
+General,General
+Enabled,Enabled
+ID,ID
+"Full Page Cache","Full Page Cache"
+"Action after policy update","Action after policy update"
