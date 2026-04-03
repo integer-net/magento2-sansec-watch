@@ -17,16 +17,16 @@ class FpcMode implements OptionSourceInterface
     {
         return [
             [
-                'value' => FpcModeEnum::NONE->value,
-                'label' => FpcModeEnum::NONE->label(),
+                'value' => FpcModeEnum::None->value,
+                'label' => FpcModeEnum::None->label(),
             ],
             [
-                'value' => FpcModeEnum::INVALIDATE->value,
-                'label' => FpcModeEnum::INVALIDATE->label(),
+                'value' => FpcModeEnum::Invalidate->value,
+                'label' => FpcModeEnum::Invalidate->label(),
             ],
             [
-                'value' => FpcModeEnum::CLEAR->value,
-                'label' => FpcModeEnum::CLEAR->label(),
+                'value' => FpcModeEnum::Clear->value,
+                'label' => FpcModeEnum::Clear->label(),
             ],
         ];
     }

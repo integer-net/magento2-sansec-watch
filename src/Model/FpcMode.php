@@ -8,16 +8,16 @@ use Magento\Framework\Phrase;
 
 enum FpcMode: string
 {
-    case NONE = 'none';
-    case INVALIDATE = 'invalidate';
-    case CLEAR = 'clear';
+    case None       = 'none';
+    case Invalidate = 'invalidate';
+    case Clear      = 'clear';
 
     public function label(): Phrase
     {
         return match ($this) {
-            FpcMode::NONE => __('Do Nothing'),
-            FpcMode::INVALIDATE => __('Invalidate FPC'),
-            FpcMode::CLEAR => __('Clear FPC'),
+            self::None       => __('Do Nothing'),
+            self::Invalidate => __('Invalidate FPC'),
+            self::Clear      => __('Clear FPC'),
         };
     }
 }

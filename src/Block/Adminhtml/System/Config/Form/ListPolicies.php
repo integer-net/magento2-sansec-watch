@@ -13,6 +13,9 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 class ListPolicies extends Field
 {
+    /** @noinspection PhpMissingClassConstantTypeInspection */
+    private const STARTING_VISIBLE_POLICIES_LIMIT = 7;
+
     protected $_template = 'IntegerNet_SansecWatch::system/config/form/list-policies.phtml';
 
     private ?string $htmlId = null;
@@ -47,6 +50,11 @@ class ListPolicies extends Field
     public function getPolicies(): array
     {
         return $this->getAllPolicies->execute();
+    }
+
+    public function getStartingVisiblePoliciesLimit(): int
+    {
+        return self::STARTING_VISIBLE_POLICIES_LIMIT;
     }
 
     protected function _getElementHtml(AbstractElement $element): string

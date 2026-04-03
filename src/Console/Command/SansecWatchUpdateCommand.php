@@ -21,7 +21,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SansecWatchUpdateCommand extends Command
 {
     private const OPTION_DRY_RUN = 'dry-run';
-
     private const OPTION_FORCE = 'force';
 
     public function __construct(
@@ -81,7 +80,7 @@ class SansecWatchUpdateCommand extends Command
 
             $io->table(
                 ['Directive', 'Host'],
-                array_map(fn(Policy $policy): array => $policy->toArray(), $policies),
+                array_map(static fn(Policy $policy): array => $policy->toArray(), $policies),
             );
         }
 

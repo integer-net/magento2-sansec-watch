@@ -66,7 +66,7 @@ class UpdateFpcTest extends TestCase
         $this->config
             ->expects(self::once())
             ->method('getFpcMode')
-            ->willReturn(FpcMode::NONE);
+            ->willReturn(FpcMode::None);
 
         $this->cacheTypeList
             ->expects(self::never())
@@ -85,7 +85,7 @@ class UpdateFpcTest extends TestCase
         $this->config
             ->expects(self::once())
             ->method('getFpcMode')
-            ->willReturn(FpcMode::INVALIDATE);
+            ->willReturn(FpcMode::Invalidate);
 
         $this->cacheTypeList
             ->expects(self::once())
@@ -104,7 +104,7 @@ class UpdateFpcTest extends TestCase
         $this->config
             ->expects(self::once())
             ->method('getFpcMode')
-            ->willReturn(FpcMode::CLEAR);
+            ->willReturn(FpcMode::Clear);
 
         $this->cacheTypeList
             ->expects(self::once())

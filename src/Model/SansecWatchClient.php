@@ -75,8 +75,8 @@ class SansecWatchClient
             ],
         ];
 
-        $response = $this->httpClient->request('GET', $uri, $options);
-
-        return $response->getContent();
+        return $this->httpClient
+            ->request('GET', $uri, $options)
+            ->getContent();
     }
 }

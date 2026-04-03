@@ -1,0 +1,29 @@
+"Update Policies Now","Regeln jetzt aktualisieren"
+"Please enable updates first.","Bitte zuerst das Modul aktivieren."
+"Could not update policies: %1","Regeln konnten nicht aktualisiert werden: %1"
+"Response is not valid JSON: %1","Antwort ist kein valides JSON: %1"
+"Could not map response JSON to DTO: %1","Das JSON konnte nicht zu einem DTO konvertiert werden: %1"
+"Could not fetch policies from sansec watch: %1","Regeln konnten nicht von Sansec Watch abgefragt werden: %1"
+"Invalid ID provided: %1, expected UUID format","Invalide ID: %1, UUID Format erwartet"
+"Do Nothing","Nichts tun"
+"Invalidate FPC","Invalidiere den FPC"
+"Clear FPC","FPC leeren"
+"Policies updated","Regeln aktualisiert"
+"Go to Dashboard","Gehe zum Dashboard"
+"Fetching Policies...","Frage Regeln ab..."
+"Last checked for updates","Zuletzt auf Aktualisierungen geprüft"
+"Last update of policies","Zuletzt Regeln aktualisiert"
+Directive,Direktive
+Host,Host
+"No policies found","Keine Regeln gefunden"
+Search,Suche
+"Show more","Zeige mehr"
+"Report URI is not configured to use sansec watch","Report URI ist nicht auf Sansec Watch konfiguriert"
+"Configured Report URIs:","Konfigurierte Report URIs:"
+"Report URI is configured correctly.","Report URI ist nicht korrekt konfiguriert."
+"Sansec Watch","Sansec Watch"
+General,Allgemein
+Enabled,Aktiviert
+ID,ID
+"Full Page Cache","Full Page Cache"
+"Action after policy update","Aktion nach einer Regelaktualisierung"

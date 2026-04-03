@@ -19,10 +19,10 @@ $htmlId = $block->getHtmlId();
         display: none;
     }
 </style>
-<?php $scriptString = <<<SCRIPT
+<?php $scriptString = /** @lang JavaScript */
+    <<<SCRIPT
     require(['prototype'], function () {
         const updatePoliciesButton = document.querySelector('#{$escaper->escapeJs($htmlId)}_update_policies_button')
-        const visitDashboardButton = document.querySelector('#{$escaper->escapeJs($htmlId)}_visit_dashboard_button')
         const loading = document.querySelector('#{$escaper->escapeJs($htmlId)}_loading')
         const messages = document.querySelector('#{$escaper->escapeJs($htmlId)}_messages')
         const url = new URL('{$escaper->escapeJs($block->getAjaxUrl())}')
@@ -108,7 +108,7 @@ SCRIPT;
         <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/>
         <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY"/>
     </svg>
-    <span style="margin-left: 1rem">Fetching Policies...</span>
+    <span style="margin-left: 1rem"><?= $escaper->escapeHtml(__('Fetching Policies...')) ?></span>
 </div>
 
 <div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_messages" style="margin-top: 2rem; display: none">

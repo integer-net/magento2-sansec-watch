@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ListPolicies;
 use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 /** @var ListPolicies $block */
 /** @var Escaper $escaper */
+/** @var SecureHtmlRenderer $secureRenderer */
 
-$htmlId = $block->getHtmlId();
+$htmlId                 = $block->getHtmlId();
+$policies               = $block->getPolicies();
+$visiblePolicyLimit     = $block->getStartingVisiblePoliciesLimit();
+$policyCount            = count($policies);
+$shouldCollapsePolicies = $policyCount > $visiblePolicyLimit;
+$noPoliciesAvailable    = $policyCount === 0;
+$shouldShowSearch       = !$noPoliciesAvailable;
 ?>
 <style>
     #row_<?= $escaper->escapeHtml($htmlId) ?> label,
@@ -24,32 +32,234 @@ $htmlId = $block->getHtmlId();
     .data-grid-th.directive {
         width: 25%;
     }
+
+    .integernet-sansec-watch-sort {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .integernet-sansec-watch-sort::after {
+        content: '\2195';
+        opacity: 0.5;
+    }
+
+    .data-grid-th[aria-sort="ascending"] .integernet-sansec-watch-sort::after {
+        content: '\2191';
+        opacity: 1;
+    }
+
+    .data-grid-th[aria-sort="descending"] .integernet-sansec-watch-sort::after {
+        content: '\2193';
+        opacity: 1;
+    }
+
+    #integernet_sansec_watch_search {
+        height: 100%;
+        width: 100%;
+    }
+
+    #integernet_sansec_watch_grid {
+        position: relative;
+    }
+
+    #integernet_sansec_watch_grid.is-collapsed .search {
+        display: none;
+    }
+
+    #integernet_sansec_watch_grid.is-collapsed .data-row:nth-of-type(n + 9) {
+        display: none;
+    }
+
+    .integernet-sansec-watch__show-more {
+        display: none;
+    }
+
+    #integernet_sansec_watch_grid.is-collapsed .integernet-sansec-watch__show-more {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 3rem 1rem 0.75rem;
+        border: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 70%);
+        cursor: pointer;
+    }
+
+    #integernet_sansec_watch_grid.is-collapsed .integernet-sansec-watch__show-more::after {
+        content: '';
+        width: 0.55rem;
+        height: 0.55rem;
+        margin-top: -0.2rem;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+    }
+
+    #integernet_sansec_watch_grid tr.no-policies-found td {
+        font-style: italic;
+        color: #777777;
+        text-align: center;
+    }
 </style>
 
+<div id="integernet_sansec_watch_grid" class="<?= /** @noEscape */ $shouldCollapsePolicies ? 'is-collapsed' : '' ?>">
+    <table class="data-grid data-grid-draggable" data-role="grid">
+        <thead>
+        <tr>
+            <th class="data-grid-th directive" scope="col" aria-sort="none">
+                <button type="button" class="integernet-sansec-watch-sort" data-sort-key="directive">
+                    <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Directive')) ?></span>
+                </button>
+            </th>
+            <th class="data-grid-th host" scope="col" aria-sort="none">
+                <button type="button" class="integernet-sansec-watch-sort" data-sort-key="host">
+                    <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Host')) ?></span>
+                </button>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($noPoliciesAvailable): ?>
+            <tr class="no-policies-found _odd-row">
+                <td colspan="2">
+                    <?= $escaper->escapeHtml(__('No policies found')) ?>
+                </td>
+            </tr>
+        <?php endif; ?>
+        <?php $isOddRow = false; ?>
+        <?php if ($shouldShowSearch): ?>
+            <tr class="search _odd-row">
+                <td colspan="2">
+                    <label for="integernet_sansec_watch_search" style="display: none"><?= $escaper->escapeHtml(__('Search')) ?></label>
+                    <input name="integernet_sansec_watch_search" id="integernet_sansec_watch_search" type="text">
+                </td>
+            </tr>
+        <?php endif; ?>
+        <?php foreach ($policies as $policy): ?>
+            <tr class="data-row <?= $escaper->escapeHtmlAttr($isOddRow ? '_odd-row' : '') ?>"
+                data-directive="<?= $escaper->escapeHtmlAttr($policy->directive) ?>"
+                data-host="<?= $escaper->escapeHtmlAttr($policy->host) ?>">
+                <td>
+                    <div class="data-grid-cell-content"><?= $escaper->escapeHtml($policy->directive) ?></div>
+                </td>
+                <td>
+                    <div class="data-grid-cell-content"><?= $escaper->escapeHtml($policy->host) ?></div>
+                </td>
+            </tr>
+            <?php $isOddRow = !$isOddRow ?>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php if ($shouldCollapsePolicies): ?>
+        <button type="button" class="integernet-sansec-watch__show-more" id="integernet_sansec_watch_show_more">
+            <?= $escaper->escapeHtml(__('Show more')) ?>
+        </button>
+    <?php endif; ?>
+</div>
 
-<table class="data-grid data-grid-draggable" data-role="grid">
-    <thead>
-    <tr>
-        <th class="data-grid-th directive">
-            <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Directive')) ?></span>
-        </th>
-        <th class="data-grid-th host">
-            <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Host')) ?></span>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php $isOddRow = true; ?>
-    <?php foreach ($block->getPolicies() as $policy): ?>
-    <tr class="data-row <?= $escaper->escapeHtmlAttr($isOddRow ? '_odd-row' : '') ?>">
-        <td>
-            <div class="data-grid-cell-content"><?= $escaper->escapeHtml($policy->directive) ?></div>
-        </td>
-        <td>
-            <div class="data-grid-cell-content"><?= $escaper->escapeHtml($policy->host) ?></div>
-        </td>
-    </tr>
-    <?php $isOddRow = !$isOddRow ?>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+<?php
+$policyFilterScript = /** @lang JavaScript */
+    <<<'script'
+    const grid           = document.querySelector('#integernet_sansec_watch_grid');
+    const tbody          = grid.querySelector('tbody');
+    const searchField    = document.querySelector('#integernet_sansec_watch_search');
+    const showMoreButton = document.querySelector('#integernet_sansec_watch_show_more');
+    const sortHeaders    = [...grid.querySelectorAll('.data-grid-th')];
+    const sortButtons    = [...grid.querySelectorAll('.integernet-sansec-watch-sort')];
+    const collator       = new Intl.Collator(undefined, {sensitivity: 'base'});
+    let   sortState      = {key: null, direction: 'asc'};
+
+    function getPolicyRows()
+    {
+        return [...tbody.querySelectorAll('.data-row')];
+    }
+
+    function updateRowStripes()
+    {
+        getPolicyRows().forEach((row, index) => {
+            row.classList.toggle('_odd-row', index % 2 === 1);
+        });
+    }
+
+    function updateSortHeaders()
+    {
+        sortHeaders.forEach((header) => {
+            const button   = header.querySelector('.integernet-sansec-watch-sort');
+            const isActive = button.dataset.sortKey === sortState.key;
+
+            const direction = sortState.direction === 'asc' ? 'ascending' : 'descending'
+            const ariaSort  = isActive ? direction : 'none'
+
+            header.setAttribute('aria-sort', ariaSort);
+        });
+    }
+
+    function searchPolicies()
+    {
+        const searchTerm = searchField.value.trim().toLowerCase();
+
+        getPolicyRows().forEach((row) => {
+            row.hidden = searchTerm !== ''
+                && !row.dataset.directive.toLowerCase().includes(searchTerm)
+                && !row.dataset.host.toLowerCase().includes(searchTerm);
+        });
+    }
+
+    function sortPolicies(key)
+    {
+        const direction = sortState.key === key && sortState.direction === 'asc'
+            ? 'desc'
+            : 'asc'
+
+        sortState = {key, direction};
+
+        const multiplier = sortState.direction === 'asc' ? 1 : -1;
+        const sortedRows = getPolicyRows().sort((rowA, rowB) => (
+            collator.compare(rowA.dataset[key], rowB.dataset[key]) * multiplier
+        ));
+
+        sortedRows.forEach((row) => tbody.appendChild(row));
+
+        updateRowStripes();
+        updateSortHeaders();
+
+        if (searchField) {
+            searchPolicies();
+        }
+    }
+
+    if (searchField) {
+        searchField.addEventListener('input', searchPolicies);
+    }
+
+    sortButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            sortPolicies(button.dataset.sortKey);
+        });
+    });
+
+    if (grid && showMoreButton) {
+        showMoreButton.addEventListener(
+            'click', () => {
+                grid.classList.remove('is-collapsed');
+                showMoreButton.hidden = true;
+            },
+            {once: true}
+        );
+    }
+    script;
+?>
+<?= /* @noEscape */
+$secureRenderer->renderTag('script', [], $policyFilterScript, false) ?>
