@@ -32,6 +32,34 @@ $shouldShowSearch       = $shouldCollapsePolicies;
         width: 25%;
     }
 
+    .integernet-sansec-watch-sort {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .integernet-sansec-watch-sort::after {
+        content: '\2195';
+        opacity: 0.5;
+    }
+
+    .data-grid-th[aria-sort="ascending"] .integernet-sansec-watch-sort::after {
+        content: '\2191';
+        opacity: 1;
+    }
+
+    .data-grid-th[aria-sort="descending"] .integernet-sansec-watch-sort::after {
+        content: '\2193';
+        opacity: 1;
+    }
+
     #integernet_sansec_watch_search {
         height: 100%;
         width: 100%;
@@ -83,18 +111,22 @@ $shouldShowSearch       = $shouldCollapsePolicies;
     <table class="data-grid data-grid-draggable" data-role="grid">
         <thead>
         <tr>
-            <th class="data-grid-th directive">
-                <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Directive')) ?></span>
+            <th class="data-grid-th directive" scope="col" aria-sort="none">
+                <button type="button" class="integernet-sansec-watch-sort" data-sort-key="directive">
+                    <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Directive')) ?></span>
+                </button>
             </th>
-            <th class="data-grid-th host">
-                <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Host')) ?></span>
+            <th class="data-grid-th host" scope="col" aria-sort="none">
+                <button type="button" class="integernet-sansec-watch-sort" data-sort-key="host">
+                    <span class="data-grid-cell-content"><?= $escaper->escapeHtml(__('Host')) ?></span>
+                </button>
             </th>
         </tr>
         </thead>
         <tbody>
         <?php $isOddRow = false; ?>
         <?php if ($shouldShowSearch): ?>
-            <tr class="search">
+            <tr class="search _odd-row">
                 <td colspan="2">
                     <label for="integernet_sansec_watch_search" style="display: none">Search</label>
                     <input name="integernet_sansec_watch_search" id="integernet_sansec_watch_search" type="text">
@@ -127,24 +159,82 @@ $shouldShowSearch       = $shouldCollapsePolicies;
 $policyFilterScript = /** @lang JavaScript */
     <<<'script'
     const grid           = document.querySelector('#integernet_sansec_watch_grid');
+    const tbody          = grid.querySelector('tbody');
     const searchField    = document.querySelector('#integernet_sansec_watch_search');
     const showMoreButton = document.querySelector('#integernet_sansec_watch_show_more');
-    const policyRows     = [...grid.querySelectorAll('#integernet_sansec_watch_grid .data-row')];
+    const sortHeaders    = [...grid.querySelectorAll('.data-grid-th')];
+    const sortButtons    = [...grid.querySelectorAll('.integernet-sansec-watch-sort')];
+    const collator       = new Intl.Collator(undefined, {sensitivity: 'base'});
+    let   sortState      = {key: null, direction: 'asc'};
+
+    function getPolicyRows()
+    {
+        return [...tbody.querySelectorAll('.data-row')];
+    }
+
+    function updateRowStripes()
+    {
+        getPolicyRows().forEach((row, index) => {
+            row.classList.toggle('_odd-row', index % 2 === 1);
+        });
+    }
+
+    function updateSortHeaders()
+    {
+        sortHeaders.forEach((header) => {
+            const button   = header.querySelector('.integernet-sansec-watch-sort');
+            const isActive = button.dataset.sortKey === sortState.key;
+
+            const direction = sortState.direction === 'asc' ? 'ascending' : 'descending'
+            const ariaSort  = isActive ? direction : 'none'
+
+            header.setAttribute('aria-sort', ariaSort);
+        });
+    }
 
     function searchPolicies()
     {
         const searchTerm = searchField.value.trim().toLowerCase();
 
-        policyRows.forEach((row) => {
+        getPolicyRows().forEach((row) => {
             row.hidden = searchTerm !== ''
                 && !row.dataset.directive.toLowerCase().includes(searchTerm)
                 && !row.dataset.host.toLowerCase().includes(searchTerm);
         });
     }
 
+    function sortPolicies(key)
+    {
+        const direction = sortState.key === key && sortState.direction === 'asc'
+            ? 'desc'
+            : 'asc'
+
+        sortState = {key, direction};
+
+        const multiplier = sortState.direction === 'asc' ? 1 : -1;
+        const sortedRows = getPolicyRows().sort((rowA, rowB) => (
+            collator.compare(rowA.dataset[key], rowB.dataset[key]) * multiplier
+        ));
+
+        sortedRows.forEach((row) => tbody.appendChild(row));
+
+        updateRowStripes();
+        updateSortHeaders();
+
+        if (searchField) {
+            searchPolicies();
+        }
+    }
+
     if (searchField) {
         searchField.addEventListener('input', searchPolicies);
     }
+
+    sortButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            sortPolicies(button.dataset.sortKey);
+        });
+    });
 
     if (grid && showMoreButton) {
         showMoreButton.addEventListener(
