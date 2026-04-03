@@ -15,7 +15,8 @@ $policies               = $block->getPolicies();
 $visiblePolicyLimit     = $block->getStartingVisiblePoliciesLimit();
 $policyCount            = count($policies);
 $shouldCollapsePolicies = $policyCount > $visiblePolicyLimit;
-$shouldShowSearch       = $shouldCollapsePolicies;
+$noPoliciesAvailable    = $policyCount === 0;
+$shouldShowSearch       = !$noPoliciesAvailable;
 ?>
 <style>
     #row_<?= $escaper->escapeHtml($htmlId) ?> label,
@@ -105,6 +106,12 @@ $shouldShowSearch       = $shouldCollapsePolicies;
         border-bottom: 2px solid currentColor;
         transform: rotate(45deg);
     }
+
+    #integernet_sansec_watch_grid tr.no-policies-found td {
+        font-style: italic;
+        color: #777777;
+        text-align: center;
+    }
 </style>
 
 <div id="integernet_sansec_watch_grid" class="<?= /** @noEscape */ $shouldCollapsePolicies ? 'is-collapsed' : '' ?>">
@@ -124,6 +131,13 @@ $shouldShowSearch       = $shouldCollapsePolicies;
         </tr>
         </thead>
         <tbody>
+        <?php if ($noPoliciesAvailable): ?>
+            <tr class="no-policies-found _odd-row">
+                <td colspan="2">
+                    No policies found
+                </td>
+            </tr>
+        <?php endif; ?>
         <?php $isOddRow = false; ?>
         <?php if ($shouldShowSearch): ?>
             <tr class="search _odd-row">
