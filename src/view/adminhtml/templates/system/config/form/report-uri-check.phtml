@@ -11,8 +11,7 @@ use Magento\Framework\Escaper;
 $htmlId = $block->getHtmlId();
 ?>
 <style>
-    label[for="<?= $escaper->escapeHtml($htmlId) ?>"],
-    label[for="<?= $escaper->escapeHtml($htmlId) ?>_inherit"],
+    #row_<?= $escaper->escapeHtml($htmlId) ?> label,
     #row_<?= $escaper->escapeHtml($htmlId) ?> .note,
     #<?= $escaper->escapeHtml($htmlId) ?>_inherit {
         display: none;
