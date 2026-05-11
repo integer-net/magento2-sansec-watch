@@ -170,96 +170,94 @@ $shouldShowSearch       = !$noPoliciesAvailable;
 </div>
 
 <?php
-$policyFilterScript = /** @lang JavaScript */
-    <<<'script'
-    const grid           = document.querySelector('#integernet_sansec_watch_grid');
-    const tbody          = grid.querySelector('tbody');
-    const searchField    = document.querySelector('#integernet_sansec_watch_search');
-    const showMoreButton = document.querySelector('#integernet_sansec_watch_show_more');
-    const sortHeaders    = [...grid.querySelectorAll('.data-grid-th')];
-    const sortButtons    = [...grid.querySelectorAll('.integernet-sansec-watch-sort')];
-    const collator       = new Intl.Collator(undefined, {sensitivity: 'base'});
-    let   sortState      = {key: null, direction: 'asc'};
+$policyFilterScript = <<<script
+const grid           = document.querySelector('#integernet_sansec_watch_grid');
+const tbody          = grid.querySelector('tbody');
+const searchField    = document.querySelector('#integernet_sansec_watch_search');
+const showMoreButton = document.querySelector('#integernet_sansec_watch_show_more');
+const sortHeaders    = [...grid.querySelectorAll('.data-grid-th')];
+const sortButtons    = [...grid.querySelectorAll('.integernet-sansec-watch-sort')];
+const collator       = new Intl.Collator(undefined, {sensitivity: 'base'});
+let   sortState      = {key: null, direction: 'asc'};
 
-    function getPolicyRows()
-    {
-        return [...tbody.querySelectorAll('.data-row')];
-    }
+function getPolicyRows()
+{
+    return [...tbody.querySelectorAll('.data-row')];
+}
 
-    function updateRowStripes()
-    {
-        getPolicyRows().forEach((row, index) => {
-            row.classList.toggle('_odd-row', index % 2 === 1);
-        });
-    }
+function updateRowStripes()
+{
+    getPolicyRows().forEach((row, index) => {
+        row.classList.toggle('_odd-row', index % 2 === 1);
+    });
+}
 
-    function updateSortHeaders()
-    {
-        sortHeaders.forEach((header) => {
-            const button   = header.querySelector('.integernet-sansec-watch-sort');
-            const isActive = button.dataset.sortKey === sortState.key;
+function updateSortHeaders()
+{
+    sortHeaders.forEach((header) => {
+        const button   = header.querySelector('.integernet-sansec-watch-sort');
+        const isActive = button.dataset.sortKey === sortState.key;
 
-            const direction = sortState.direction === 'asc' ? 'ascending' : 'descending'
-            const ariaSort  = isActive ? direction : 'none'
+        const direction = sortState.direction === 'asc' ? 'ascending' : 'descending'
+        const ariaSort  = isActive ? direction : 'none'
 
-            header.setAttribute('aria-sort', ariaSort);
-        });
-    }
+        header.setAttribute('aria-sort', ariaSort);
+    });
+}
 
-    function searchPolicies()
-    {
-        const searchTerm = searchField.value.trim().toLowerCase();
+function searchPolicies()
+{
+    const searchTerm = searchField.value.trim().toLowerCase();
 
-        getPolicyRows().forEach((row) => {
-            row.hidden = searchTerm !== ''
-                && !row.dataset.directive.toLowerCase().includes(searchTerm)
-                && !row.dataset.host.toLowerCase().includes(searchTerm);
-        });
-    }
+    getPolicyRows().forEach((row) => {
+        row.hidden = searchTerm !== ''
+            && !row.dataset.directive.toLowerCase().includes(searchTerm)
+            && !row.dataset.host.toLowerCase().includes(searchTerm);
+    });
+}
 
-    function sortPolicies(key)
-    {
-        const direction = sortState.key === key && sortState.direction === 'asc'
-            ? 'desc'
-            : 'asc'
+function sortPolicies(key)
+{
+    const direction = sortState.key === key && sortState.direction === 'asc'
+        ? 'desc'
+        : 'asc'
 
-        sortState = {key, direction};
+    sortState = {key, direction};
 
-        const multiplier = sortState.direction === 'asc' ? 1 : -1;
-        const sortedRows = getPolicyRows().sort((rowA, rowB) => (
-            collator.compare(rowA.dataset[key], rowB.dataset[key]) * multiplier
-        ));
+    const multiplier = sortState.direction === 'asc' ? 1 : -1;
+    const sortedRows = getPolicyRows().sort((rowA, rowB) => (
+        collator.compare(rowA.dataset[key], rowB.dataset[key]) * multiplier
+    ));
 
-        sortedRows.forEach((row) => tbody.appendChild(row));
+    sortedRows.forEach((row) => tbody.appendChild(row));
 
-        updateRowStripes();
-        updateSortHeaders();
-
-        if (searchField) {
-            searchPolicies();
-        }
-    }
+    updateRowStripes();
+    updateSortHeaders();
 
     if (searchField) {
-        searchField.addEventListener('input', searchPolicies);
+        searchPolicies();
     }
+}
 
-    sortButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            sortPolicies(button.dataset.sortKey);
-        });
+if (searchField) {
+    searchField.addEventListener('input', searchPolicies);
+}
+
+sortButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        sortPolicies(button.dataset.sortKey);
     });
+});
 
-    if (grid && showMoreButton) {
-        showMoreButton.addEventListener(
-            'click', () => {
-                grid.classList.remove('is-collapsed');
-                showMoreButton.hidden = true;
-            },
-            {once: true}
-        );
-    }
-    script;
+if (grid && showMoreButton) {
+    showMoreButton.addEventListener(
+        'click', () => {
+            grid.classList.remove('is-collapsed');
+            showMoreButton.hidden = true;
+        },
+        {once: true}
+    );
+}
+script;
 ?>
-<?= /* @noEscape */
-$secureRenderer->renderTag('script', [], $policyFilterScript, false) ?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $policyFilterScript, false) ?>
