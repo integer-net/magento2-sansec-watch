@@ -19,67 +19,66 @@ $htmlId = $block->getHtmlId();
         display: none;
     }
 </style>
-<?php $scriptString = /** @lang JavaScript */
-    <<<SCRIPT
-    require(['prototype'], function () {
-        const updatePoliciesButton = document.querySelector('#{$escaper->escapeJs($htmlId)}_update_policies_button')
-        const loading = document.querySelector('#{$escaper->escapeJs($htmlId)}_loading')
-        const messages = document.querySelector('#{$escaper->escapeJs($htmlId)}_messages')
-        const url = new URL('{$escaper->escapeJs($block->getAjaxUrl())}')
-        url.searchParams.set('isAjax', 'true')
+<?php $scriptString = <<<script
+require(['prototype'], function () {
+    const updatePoliciesButton = document.querySelector('#{$escaper->escapeJs($htmlId)}_update_policies_button')
+    const loading = document.querySelector('#{$escaper->escapeJs($htmlId)}_loading')
+    const messages = document.querySelector('#{$escaper->escapeJs($htmlId)}_messages')
+    const url = new URL('{$escaper->escapeJs($block->getAjaxUrl())}')
+    url.searchParams.set('isAjax', 'true')
 
-        const showMessages = () => messages.style.display = 'block'
-        const hideMessages = () => messages.style.display = 'none'
-        const showLoading = () => loading.style.display = 'flex'
-        const hideLoading = () => loading.style.display = 'none'
-        const enableUpdatePoliciesButton = () => updatePoliciesButton.disabled = false
-        const disableUpdatePoliciesButton = () => updatePoliciesButton.disabled = true
-        const displayMessage = (message, error = false) => {
-            messages.innerHTML = error
-                ? `<span style="color: red; font-weight: bold">\${message}</span>`
-                : `<span>\${message}</span>`
+    const showMessages = () => messages.style.display = 'block'
+    const hideMessages = () => messages.style.display = 'none'
+    const showLoading = () => loading.style.display = 'flex'
+    const hideLoading = () => loading.style.display = 'none'
+    const enableUpdatePoliciesButton = () => updatePoliciesButton.disabled = false
+    const disableUpdatePoliciesButton = () => updatePoliciesButton.disabled = true
+    const displayMessage = (message, error = false) => {
+        messages.innerHTML = error
+            ? `<span style="color: red; font-weight: bold">\${message}</span>`
+            : `<span>\${message}</span>`
 
-            showMessages()
-        }
-        const clearMessages = () => {
-            messages.innerHTML = ''
-            hideMessages()
-        }
+        showMessages()
+    }
+    const clearMessages = () => {
+        messages.innerHTML = ''
+        hideMessages()
+    }
 
-        const handleResponse = (response) => {
-            hideLoading()
-            enableUpdatePoliciesButton()
+    const handleResponse = (response) => {
+        hideLoading()
+        enableUpdatePoliciesButton()
 
-            if (response.success !== true) {
-                displayMessage(response.message, true)
-                return
-            }
-
-            displayMessage('{$escaper->escapeJs(__('Policies updated'))}')
-            setTimeout(() => window.location.reload(), 250);
+        if (response.success !== true) {
+            displayMessage(response.message, true)
+            return
         }
 
-        updatePoliciesButton.addEventListener('click', () => {
-            const body = new FormData()
-            body.append('form_key', window.FORM_KEY);
+        displayMessage('{$escaper->escapeJs(__('Policies updated'))}')
+        setTimeout(() => window.location.reload(), 250);
+    }
 
-            disableUpdatePoliciesButton()
-            showLoading()
-            clearMessages()
+    updatePoliciesButton.addEventListener('click', () => {
+        const body = new FormData()
+        body.append('form_key', window.FORM_KEY);
 
-            const options = {
-                method: 'POST',
-                credentials: 'include',
-                body: body,
-            }
+        disableUpdatePoliciesButton()
+        showLoading()
+        clearMessages()
 
-            fetch(url, options)
-                .then(response => response.json())
-                .then(handleResponse)
-                .catch(error => console.error(error))
-        })
-    });
-SCRIPT;
+        const options = {
+            method: 'POST',
+            credentials: 'include',
+            body: body,
+        }
+
+        fetch(url, options)
+            .then(response => response.json())
+            .then(handleResponse)
+            .catch(error => console.error(error))
+    })
+});
+script;
 ?>
 <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>
 
