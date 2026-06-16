@@ -13,12 +13,14 @@ use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Override;
 
 use function sprintf;
+use function __;
 
 class Buttons extends Field
 {
-    private const SANSEC_WATCH_DASHBOARD_URL = 'https://sansec.watch/d/%s';
+    private const string SANSEC_WATCH_DASHBOARD_URL = 'https://sansec.watch/d/%s';
 
     protected $_template = 'IntegerNet_SansecWatch::system/config/form/buttons.phtml';
 
@@ -33,6 +35,7 @@ class Buttons extends Field
         parent::__construct($context, $data, $secureRenderer);
     }
 
+    #[Override]
     public function render(AbstractElement $element): string
     {
         $this->htmlId = $element->getHtmlId();
@@ -82,6 +85,7 @@ class Buttons extends Field
         return sprintf(self::SANSEC_WATCH_DASHBOARD_URL, $this->config->getId());
     }
 
+    #[Override]
     protected function _getElementHtml(AbstractElement $element): string
     {
         return $this->_toHtml();

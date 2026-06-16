@@ -10,6 +10,8 @@ use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 
+use function sprintf;
+
 class PolicyMapper
 {
     /**

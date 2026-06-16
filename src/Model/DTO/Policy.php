@@ -9,8 +9,7 @@ class Policy
     public function __construct(
         public readonly string $directive,
         public readonly string $host,
-    ) {
-    }
+    ) {}
 
     /**
      * @phpstan-param array{directive: string, host: string} $array

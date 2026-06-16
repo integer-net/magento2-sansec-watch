@@ -12,6 +12,8 @@ use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Throwable;
 
+use function __;
+
 class CouldNotFetchPoliciesException extends LocalizedException
 {
     public function __construct(

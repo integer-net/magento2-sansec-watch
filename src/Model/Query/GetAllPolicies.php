@@ -9,6 +9,9 @@ use IntegerNet\SansecWatch\Model\Config;
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 use Magento\Framework\App\ResourceConnection;
 
+use function array_map;
+use function array_values;
+
 class GetAllPolicies
 {
     /**
@@ -18,8 +21,7 @@ class GetAllPolicies
 
     public function __construct(
         private readonly ResourceConnection $resourceConnection,
-    ) {
-    }
+    ) {}
 
     /**
      * @return list<Policy>
@@ -46,6 +48,6 @@ class GetAllPolicies
             return [];
         }
 
-        return array_map(Policy::fromArray(...), $policies);
+        return array_values(array_map(Policy::fromArray(...), $policies));
     }
 }

@@ -6,6 +6,8 @@ namespace IntegerNet\SansecWatch\Model;
 
 use Magento\Framework\Phrase;
 
+use function __;
+
 enum FpcMode: string
 {
     case None       = 'none';

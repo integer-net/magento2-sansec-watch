@@ -1,21 +1,36 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method IntegerNet\\\\SansecWatch\\\\Block\\\\Adminhtml\\\\System\\\\Config\\\\Form\\\\Buttons\\:\\:__construct\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: '#^Method IntegerNet\\SansecWatch\\Block\\Adminhtml\\System\\Config\\Form\\Buttons\:\:__construct\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: src/Block/Adminhtml/System/Config/Form/Buttons.php
 
 		-
-			message: "#^Method IntegerNet\\\\SansecWatch\\\\Block\\\\Adminhtml\\\\System\\\\Config\\\\Form\\\\ReportUriCheck\\:\\:getConfigurationPaths\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method IntegerNet\\SansecWatch\\Block\\Adminhtml\\System\\Config\\Form\\ReportUriCheck\:\:getConfigurationPaths\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: src/Block/Adminhtml/System/Config/Form/ReportUriCheck.php
 
 		-
-			message: "#^Only booleans are allowed in a negated boolean, string\\|null given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: src/Block/Adminhtml/System/Config/Form/ReportUriCheck.php
 
 		-
-			message: "#^Property IntegerNet\\\\SansecWatch\\\\Block\\\\Adminhtml\\\\System\\\\Config\\\\Form\\\\ReportUriCheck\\:\\:\\$configurationStatusMap type has no value type specified in iterable type array\\.$#"
+			message: '#^Property IntegerNet\\SansecWatch\\Block\\Adminhtml\\System\\Config\\Form\\ReportUriCheck\:\:\$configurationStatusMap type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: src/Block/Adminhtml/System/Config/Form/ReportUriCheck.php
+
+		-
+			message: '''
+				#^Access to property \$_authorization of deprecated class Magento\\Backend\\App\\AbstractAction\:
+				102\.0\.0 Use \\Magento\\Framework\\App\\ActionInterface
+
+				phpcs\:disable Magento2\.Classes\.AbstractApi$#
+			'''
+			identifier: property.deprecatedClass
+			count: 1
+			path: src/Controller/Adminhtml/Action/Update.php

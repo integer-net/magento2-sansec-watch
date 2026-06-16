@@ -2,38 +2,19 @@
 
 declare(strict_types=1);
 
-use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
-use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
-use Rector\Strict\Rector\BooleanNot\BooleanInBooleanNotRuleFixerRector;
-use Rector\TypeDeclaration\Rector\Closure\ClosureReturnTypeRector;
+use Rector\ValueObject\PhpVersion;
 
-/** @noinspection PhpUnhandledExceptionInspection */
 return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
-    ->withPhpSets(
-        php81: true
+    ->withComposerBased(
+        phpunit: true,
     )
-    ->withPreparedSets(
-        deadCode          : true,
-        codeQuality       : true,
-        codingStyle       : true,
-        typeDeclarations  : true,
-        privatization     : true,
-        instanceOf        : true,
-        earlyReturn       : true,
-        strictBooleans    : true,
-        phpunitCodeQuality: true,
-        phpunit           : true,
-    )
+    ->withPhpLevel(PhpVersion::PHP_83)
     ->withSkip([
-        BooleanInBooleanNotRuleFixerRector::class,
-        ClosureReturnTypeRector::class,
         ClosureToArrowFunctionRector::class,
-        NewlineAfterStatementRector::class,
-        PreferPHPUnitThisCallRector::class,
     ]);

@@ -14,8 +14,7 @@ class SansecWatchClientFactory
 {
     public function __construct(
         private readonly ObjectManagerInterface $objectManager,
-    ) {
-    }
+    ) {}
 
     public function create(
         ?HttpClientInterface $httpClient = null,
