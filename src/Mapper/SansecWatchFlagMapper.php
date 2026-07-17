@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace IntegerNet\SansecWatch\Mapper;
 
-use CuyZ\Valinor\Mapper\Configurator\ConvertKeysToCamelCase;
+use CuyZ\Valinor\Mapper\Configurator\MapKeysToCamelCase;
 use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
@@ -24,7 +24,7 @@ class SansecWatchFlagMapper
         try {
             return (new MapperBuilder())
                 ->configureWith(
-                    new ConvertKeysToCamelCase(),
+                    new MapKeysToCamelCase(),
                 )
                 ->allowSuperfluousKeys()
                 ->supportDateFormats(DATE_ATOM)
