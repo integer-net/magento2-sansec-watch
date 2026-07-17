@@ -21,7 +21,7 @@ definitions:
     - step: &ecs
         script:
           - composer install
-          - ./vendor/bin/ecs --no-progress-bar --no-interaction --no-ansi --output-format=checkstyle check > checkstyle-ecs.xml
+          - ./vendor/bin/ecs --no-progress-bar --no-interaction --no-ansi --output-format=checkstyle > checkstyle-ecs.xml
         after-script:
           - pipe: atlassian/checkstyle-report:0.5.1
             variables:
