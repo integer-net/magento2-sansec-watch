@@ -10,11 +10,12 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Override;
 
 class ListPolicies extends Field
 {
     /** @noinspection PhpMissingClassConstantTypeInspection */
-    private const STARTING_VISIBLE_POLICIES_LIMIT = 7;
+    private const int STARTING_VISIBLE_POLICIES_LIMIT = 7;
 
     protected $_template = 'IntegerNet_SansecWatch::system/config/form/list-policies.phtml';
 
@@ -32,6 +33,7 @@ class ListPolicies extends Field
         parent::__construct($context, $data, $secureRenderer);
     }
 
+    #[Override]
     public function render(AbstractElement $element): string
     {
         $this->htmlId = $element->getHtmlId();
@@ -57,6 +59,7 @@ class ListPolicies extends Field
         return self::STARTING_VISIBLE_POLICIES_LIMIT;
     }
 
+    #[Override]
     protected function _getElementHtml(AbstractElement $element): string
     {
         return $this->_toHtml();

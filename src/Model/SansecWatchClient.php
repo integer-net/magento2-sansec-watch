@@ -16,6 +16,8 @@ use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+use function str_replace;
+
 class SansecWatchClient
 {
     public function __construct(
@@ -23,8 +25,7 @@ class SansecWatchClient
         private readonly PolicyMapper $policyMapper,
         private readonly ManagerInterface $eventManager,
         private readonly Config $config,
-    ) {
-    }
+    ) {}
 
     /**
      * @return list<Policy>

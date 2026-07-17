@@ -18,10 +18,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function array_map;
+
 class SansecWatchUpdateCommand extends Command
 {
-    private const OPTION_DRY_RUN = 'dry-run';
-    private const OPTION_FORCE = 'force';
+    private const string OPTION_DRY_RUN = 'dry-run';
+    private const string OPTION_FORCE = 'force';
 
     public function __construct(
         private readonly Config $config,
@@ -49,8 +51,8 @@ class SansecWatchUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $isDryRun = (bool)$input->getOption(self::OPTION_DRY_RUN);
-        $isForce = (bool)$input->getOption(self::OPTION_FORCE);
+        $isDryRun = (bool) $input->getOption(self::OPTION_DRY_RUN);
+        $isForce = (bool) $input->getOption(self::OPTION_FORCE);
 
         $io = new SymfonyStyle($input, $output);
 

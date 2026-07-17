@@ -10,7 +10,11 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Override;
 use Symfony\Component\Uid\Uuid;
+
+use function is_string;
+use function str_contains;
 
 class ReportUriCheck extends Field
 {
@@ -33,6 +37,7 @@ class ReportUriCheck extends Field
         parent::__construct($context, $data, $secureRenderer);
     }
 
+    #[Override]
     public function render(AbstractElement $element): string
     {
         $this->htmlId = $element->getHtmlId();
@@ -94,6 +99,7 @@ class ReportUriCheck extends Field
         return false;
     }
 
+    #[Override]
     protected function _getElementHtml(AbstractElement $element): string
     {
         return $this->_toHtml();

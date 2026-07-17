@@ -10,6 +10,9 @@ use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
 
+use function array_map;
+use function array_merge;
+
 class SansecPolicyCollector implements PolicyCollectorInterface
 {
     public function __construct(
@@ -17,8 +20,7 @@ class SansecPolicyCollector implements PolicyCollectorInterface
         private readonly FetchPolicyFactory $fetchPolicyFactory,
         private readonly State $state,
         private readonly Config $config,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws LocalizedException

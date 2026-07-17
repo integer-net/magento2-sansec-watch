@@ -20,96 +20,76 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(UpdateFpc::class)]
 class UpdateFpcTest extends TestCase
 {
-    private Config&MockObject $config;
-    private PageCacheConfig&Stub $pageCacheConfig;
-    private TypeListInterface&MockObject $cacheTypeList;
-
-    private UpdateFpc $updateFpc;
-
-    /**
-     * @noinspection PhpUnhandledExceptionInspection
-     */
-    protected function setUp(): void
-    {
-        $this->config          = self::createMock(Config::class);
-        $this->pageCacheConfig = self::createStub(PageCacheConfig::class);
-        $this->cacheTypeList   = self::createMock(TypeListInterface::class);
-
-        $this->updateFpc = new UpdateFpc(
-            $this->config,
-            $this->pageCacheConfig,
-            $this->cacheTypeList,
-        );
-    }
-
     #[Test]
     public function nothingIsDoneIfFpcIsDisabled(): void
     {
-        $this->pageCacheConfig
-            ->method('isEnabled')
-            ->willReturn(false);
+        $pageCacheConfig = self::createStub(PageCacheConfig::class);
+        $pageCacheConfig->method('isEnabled')->willReturn(false);
 
-        $this->config
-            ->expects(self::never())
-            ->method(self::anything());
+        $config = $this->createMock(Config::class);
+        $config->expects($this->never())->method(self::anything());
 
-        $this->updateFpc->execute();
+        (new UpdateFpc(
+            $config,
+            $pageCacheConfig,
+            self::createStub(TypeListInterface::class),
+        ))->execute();
     }
 
     #[Test]
     public function nothingIsDoneIfFpcModeIsNone(): void
     {
-        $this->pageCacheConfig
-            ->method('isEnabled')
-            ->willReturn(true);
+        $pageCacheConfig = self::createStub(PageCacheConfig::class);
+        $pageCacheConfig->method('isEnabled')->willReturn(true);
 
-        $this->config
-            ->expects(self::once())
-            ->method('getFpcMode')
-            ->willReturn(FpcMode::None);
+        $config = $this->createMock(Config::class);
+        $config->expects($this->once())->method('getFpcMode')->willReturn(FpcMode::None);
 
-        $this->cacheTypeList
-            ->expects(self::never())
-            ->method(self::anything());
+        $cacheTypeList = $this->createMock(TypeListInterface::class);
+        $cacheTypeList->expects($this->never())->method(self::anything());
 
-        $this->updateFpc->execute();
+        (new UpdateFpc(
+            $config,
+            $pageCacheConfig,
+            $cacheTypeList,
+        ))->execute();
     }
 
     #[Test]
     public function invalidatesFpcIfModeIfInvalidate(): void
     {
-        $this->pageCacheConfig
-            ->method('isEnabled')
-            ->willReturn(true);
+        $pageCacheConfig = self::createStub(PageCacheConfig::class);
+        $pageCacheConfig->method('isEnabled')->willReturn(true);
 
-        $this->config
-            ->expects(self::once())
-            ->method('getFpcMode')
-            ->willReturn(FpcMode::Invalidate);
+        $config = $this->createMock(Config::class);
+        $config->expects($this->once())->method('getFpcMode')->willReturn(FpcMode::Invalidate);
 
-        $this->cacheTypeList
-            ->expects(self::once())
-            ->method('invalidate');
+        $cacheTypeList = $this->createMock(TypeListInterface::class);
+        $cacheTypeList->expects($this->once())->method('invalidate');
 
-        $this->updateFpc->execute();
+        (new UpdateFpc(
+            $config,
+            $pageCacheConfig,
+            $cacheTypeList,
+        ))->execute();
     }
 
     #[Test]
     public function clearsFpcIfModeIfClear(): void
     {
-        $this->pageCacheConfig
-            ->method('isEnabled')
-            ->willReturn(true);
+        $pageCacheConfig = self::createStub(PageCacheConfig::class);
+        $pageCacheConfig->method('isEnabled')->willReturn(true);
 
-        $this->config
-            ->expects(self::once())
-            ->method('getFpcMode')
-            ->willReturn(FpcMode::Clear);
+        $config = $this->createMock(Config::class);
+        $config->expects($this->once())->method('getFpcMode')->willReturn(FpcMode::Clear);
 
-        $this->cacheTypeList
-            ->expects(self::once())
-            ->method('cleanType');
+        $cacheTypeList = $this->createMock(TypeListInterface::class);
+        $cacheTypeList->expects($this->once())->method('cleanType');
 
-        $this->updateFpc->execute();
+        (new UpdateFpc(
+            $config,
+            $pageCacheConfig,
+            $cacheTypeList,
+        ))->execute();
     }
 }

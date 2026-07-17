@@ -18,8 +18,7 @@ class Config
 
     public function __construct(
         private readonly ScopeConfigInterface $scopeConfig,
-    ) {
-    }
+    ) {}
 
     public function isEnabled(): bool
     {
@@ -31,7 +30,7 @@ class Config
      */
     public function getId(): Uuid
     {
-        $id = (string)$this->scopeConfig->getValue(self::INTEGERNET_SANSEC_WATCH_GENERAL_ID);
+        $id = (string) $this->scopeConfig->getValue(self::INTEGERNET_SANSEC_WATCH_GENERAL_ID);
 
         if (!Uuid::isValid($id)) {
             throw InvalidConfigurationException::fromInvalidUuid($id);

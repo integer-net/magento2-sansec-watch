@@ -14,6 +14,7 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\FlagManager;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Override;
 
 class Dates extends Field
 {
@@ -36,6 +37,7 @@ class Dates extends Field
         parent::__construct($context, $data, $secureRenderer);
     }
 
+    #[Override]
     public function render(AbstractElement $element): string
     {
         $this->htmlId = $element->getHtmlId();
@@ -66,6 +68,7 @@ class Dates extends Field
             : '';
     }
 
+    #[Override]
     protected function _getElementHtml(AbstractElement $element): string
     {
         return $this->_toHtml();

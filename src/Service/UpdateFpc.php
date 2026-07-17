@@ -16,8 +16,7 @@ class UpdateFpc
         private readonly Config $config,
         private readonly PageCacheConfig $pageCacheConfig,
         private readonly TypeListInterface $cacheList,
-    ) {
-    }
+    ) {}
 
     public function execute(): void
     {

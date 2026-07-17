@@ -17,8 +17,7 @@ class UpdatePolicies
         private readonly SansecWatchClientFactory $sansecWatchClientFactory,
         private readonly PolicyUpdater $policyUpdater,
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     public function execute(): void
     {

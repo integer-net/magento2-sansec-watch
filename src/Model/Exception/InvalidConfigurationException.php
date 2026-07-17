@@ -6,6 +6,8 @@ namespace IntegerNet\SansecWatch\Model\Exception;
 
 use Magento\Framework\Exception\LocalizedException;
 
+use function __;
+
 class InvalidConfigurationException extends LocalizedException
 {
     public static function fromInvalidUuid(string $uuid): self

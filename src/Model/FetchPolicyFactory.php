@@ -16,8 +16,7 @@ class FetchPolicyFactory
         private readonly bool $evalAllowed = true,
         private readonly bool $dynamicAllowed = false,
         private readonly bool $eventHandlersAllowed = true,
-    ) {
-    }
+    ) {}
 
     public function fromPolicyDto(Policy $policy): FetchPolicy
     {

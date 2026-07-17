@@ -12,6 +12,9 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
+use Override;
+
+use function __;
 
 class Update extends Action
 {
@@ -56,6 +59,7 @@ class Update extends Action
         ]);
     }
 
+    #[Override]
     protected function _isAllowed(): bool
     {
         return $this->_authorization->isAllowed('IntegerNet_SansecWatch::configuration');

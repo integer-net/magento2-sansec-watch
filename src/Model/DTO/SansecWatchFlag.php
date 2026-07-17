@@ -15,8 +15,7 @@ class SansecWatchFlag implements JsonSerializable
         public readonly string $hash,
         public readonly DateTimeImmutable $lastCheckedAt,
         public readonly DateTimeImmutable $lastUpdatedAt,
-    ) {
-    }
+    ) {}
 
     /**
      * @phpstan-return array{

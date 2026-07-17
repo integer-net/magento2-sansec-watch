@@ -10,12 +10,14 @@ use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
 use Magento\Framework\App\ResourceConnection;
 
+use function __;
+use function array_map;
+
 class UpdatePolicies
 {
     public function __construct(
         private readonly ResourceConnection $resourceConnection,
-    ) {
-    }
+    ) {}
 
     /**
      * @param list<Policy> $policies

@@ -14,6 +14,11 @@ use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\FlagManager;
 use Symfony\Component\Clock\ClockInterface;
 
+use function is_array;
+use function hash;
+use function serialize;
+use function usort;
+
 class PolicyUpdater
 {
     public function __construct(
@@ -23,8 +28,7 @@ class PolicyUpdater
         private readonly ClockInterface $clock,
         private readonly UpdateFpc $updateFpc,
         private readonly ManagerInterface $eventManager,
-    ) {
-    }
+    ) {}
 
     /**
      * @param list<Policy> $policies
