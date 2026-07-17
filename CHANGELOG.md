@@ -5,13 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.1]
+## [2.0.1] - 2026-07-17
+
+- Updated the changelog with the missing entry for 2.0.0
+
+## [2.0.0] - 2026-07-17
+
+### Changed
+
+- Raised the minimum supported PHP version to 8.3.
+- Added compatibility with Symfony 8 components.
+- Updated Valinor to 2.4 and adapted Sansec Watch flag mapping accordingly.
+- Updated the development and CI toolchain for PHP 8.5, including PHPUnit 12 and PHPStan 2.
+
+### Fixed
+
+- Ensured policies loaded from the database are returned as a sequential list.
+
+## [1.1.1] - 2026-05-11
 
 ### Fixed
 
 - Use heredoc instead of nowdoc to render scripts with the SecureHtmlRenderer (prevent problems with processed templates)
 
-## [1.1.0]
+## [1.1.0] - 2026-04-03
 
 ### Added
 
@@ -104,6 +121,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added full page cache handling after policy updates.
 - Added extension points for customizations.
 
+[2.0.1]: https://github.com/integer-net/magento2-sansec-watch/compare/2.0.0...2.0.1
+[2.0.0]: https://github.com/integer-net/magento2-sansec-watch/compare/1.1.1...2.0.0
+[1.1.1]: https://github.com/integer-net/magento2-sansec-watch/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/integer-net/magento2-sansec-watch/compare/1.0.12...1.1.0
 [1.0.12]: https://github.com/integer-net/magento2-sansec-watch/compare/1.0.11...1.0.12
 [1.0.11]: https://github.com/integer-net/magento2-sansec-watch/compare/1.0.10...1.0.11
