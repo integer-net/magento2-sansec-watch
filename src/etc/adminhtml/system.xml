@@ -132,7 +132,7 @@
                     </field>
                 </group>
                 <group id="frame_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="150" translate="label">
-                    <label>framr-src</label>
+                    <label>frame-src</label>
                     <comment>Allowed sources for frames and iframes embedded by the page</comment>
                     <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>None allowed</label>
