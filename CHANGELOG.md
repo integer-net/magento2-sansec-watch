@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.1] - 2026-07-17
 
+### Changed
+- Replace deprecated ConvertKeysToCamelCase with MapKeysToCamelCase in SansecWatchFlagMapper
+
+### Fixed
 - Updated the changelog with the missing entry for 2.0.0
+- Fix bitbucket pipeline
 
 ## [2.0.0] - 2026-07-17
 
