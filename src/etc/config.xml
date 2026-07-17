@@ -8,6 +8,76 @@
             <fpc>
                 <mode>invalidate</mode>
             </fpc>
+            <directive>
+                <none_allowed>0</none_allowed>
+                <self_allowed>1</self_allowed>
+                <inline_allowed>0</inline_allowed>
+                <eval_allowed>1</eval_allowed>
+                <dynamic_allowed>0</dynamic_allowed>
+                <event_handlers_allowed>1</event_handlers_allowed>
+                <child_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </child_src>
+                <connect_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </connect_src>
+                <default_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </default_src>
+                <font_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </font_src>
+                <frame_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </frame_src>
+                <img_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </img_src>
+                <manifest_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </manifest_src>
+                <media_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </media_src>
+                <object_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </object_src>
+                <script_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                    <inline_allowed>inherited</inline_allowed>
+                    <eval_allowed>inherited</eval_allowed>
+                    <dynamic_allowed>inherited</dynamic_allowed>
+                    <event_handlers_allowed>inherited</event_handlers_allowed>
+                </script_src>
+                <style_src>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                    <inline_allowed>inherited</inline_allowed>
+                    <event_handlers_allowed>inherited</event_handlers_allowed>
+                </style_src>
+                <base_uri>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </base_uri>
+                <form_action>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </form_action>
+                <frame_ancestors>
+                    <none_allowed>inherited</none_allowed>
+                    <self_allowed>inherited</self_allowed>
+                </frame_ancestors>
+            </directive>
         </integernet_sansecwatch>
     </default>
 </config>

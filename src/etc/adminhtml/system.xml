@@ -10,36 +10,301 @@
             <resource>IntegerNet_SansecWatch::configuration</resource>
             <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
                 <label>General</label>
-                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>ID</label>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="policies_update" translate="note" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="policies_update" translate="note" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Buttons</frontend_model>
                 </field>
-                <field id="report_uri_check" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="report_uri_check" translate="note" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Report URL Check</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ReportUriCheck</frontend_model>
                 </field>
-                <field id="last_dates_checked" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <field id="last_dates_checked" translate="note" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Dates</frontend_model>
                 </field>
-                <field id="policies_list" translate="note" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="policies_list" translate="note" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ListPolicies</frontend_model>
                 </field>
             </group>
-            <group id="fpc" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <group id="directive" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                <label>Directives Settings</label>
+                <field id="documentation" translate="label" type="note" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Documentation</label>
+                    <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\MdnCspLink</frontend_model>
+                </field>
+
+                <field id="none_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default: None allowed</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Emits only 'none', disabling the entire directive</comment>
+                </field>
+                <field id="self_allowed" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default: Self allowed</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                </field>
+                <field id="inline_allowed" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default: Inline allowed</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Adds 'unsafe-inline', allowing inline scripts/styles. This weakens CSP significantly</comment>
+                </field>
+                <field id="eval_allowed" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default: Eval allowed</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Adds 'unsafe-eval', allowing JavaScript string evaluation such as eval(), new Function(), and similar APIs</comment>
+                </field>
+                <field id="dynamic_allowed" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default: Dynamic allowed</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Adds 'strict-dynamic'—for script-src, trust from nonce/hash-authorized scripts can propagate to scripts they load</comment>
+                </field>
+                <field id="event_handlers_allowed" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default: Event handlers allowed</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Adds 'unsafe-hashes', allowing specifically hash-authorized inline event handlers such as onclick; it does not allow all event handlers automatically</comment>
+                </field>
+
+                <group id="default_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="110" translate="label">
+                    <label>default-src</label>
+                    <comment>Fallback source list for fetch directives that do not have their own policy</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="child_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="120" translate="label">
+                    <label>child-src</label>
+                    <comment>Sources for nested browsing contexts and workers; used as a fallback for frame-src and worker-src</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="connect_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="130" translate="label">
+                    <label>connect-src</label>
+                    <comment>Allowed destinations for connections such as fetch, XHR, WebSocket, EventSource, and sendBeacon</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="font_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="140" translate="label">
+                    <label>font-src</label>
+                    <comment>Allowed sources for fonts loaded by the page</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="frame_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="150" translate="label">
+                    <label>framr-src</label>
+                    <comment>Allowed sources for frames and iframes embedded by the page</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="img_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="160" translate="label">
+                    <label>img-src</label>
+                    <comment>Allowed sources for images</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="manifest_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="170" translate="label">
+                    <label>manifest-src</label>
+                    <comment>Allowed sources for web app manifests</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="media_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="180" translate="label">
+                    <label>media-src</label>
+                    <comment>Allowed sources for audio and video</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="object_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="190" translate="label">
+                    <label>object-src</label>
+                    <comment>Allowed sources for plugins and embedded objects such as object, embed, and applet</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="script_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="200" translate="label">
+                    <label>script-src</label>
+                    <comment>Allowed sources and execution behaviors for JavaScript</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                    <field id="inline_allowed" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Inline allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'unsafe-inline', allowing inline scripts/styles. This weakens CSP significantly</comment>
+                    </field>
+                    <field id="eval_allowed" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Eval allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'unsafe-eval', allowing JavaScript string evaluation such as eval(), new Function(), and similar APIs</comment>
+                    </field>
+                    <field id="dynamic_allowed" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Dynamic allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'strict-dynamic'—for script-src, trust from nonce/hash-authorized scripts can propagate to scripts they load</comment>
+                    </field>
+                    <field id="event_handlers_allowed" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Event handlers allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'unsafe-hashes', allowing specifically hash-authorized inline event handlers such as onclick; it does not allow all event handlers automatically</comment>
+                    </field>
+                </group>
+                <group id="style_src" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="210" translate="label">
+                    <label>style-src</label>
+                    <comment>Allowed sources and inline behavior for CSS</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                    <field id="inline_allowed" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Inline allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'unsafe-inline', allowing inline scripts/styles. This weakens CSP significantly</comment>
+                    </field>
+                    <field id="event_handlers_allowed" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Event handlers allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'unsafe-hashes', allowing specifically hash-authorized inline event handlers such as onclick; it does not allow all event handlers automatically</comment>
+                    </field>
+                </group>
+                <group id="base_uri" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="220" translate="label">
+                    <label>base-uri</label>
+                    <comment>Controls the URLs that can be used in the document base element</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="form_action" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="230" translate="label">
+                    <label>form-action</label>
+                    <comment>Allowed destinations for form submissions</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+                <group id="frame_ancestors" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="240" translate="label">
+                    <label>frame-ancestors</label>
+                    <comment>Allowed parent pages that can embed this page in a frame</comment>
+                    <field id="none_allowed" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>None allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Emits only 'none', disabling the entire directive</comment>
+                    </field>
+                    <field id="self_allowed" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Self allowed</label>
+                        <source_model>IntegerNet\SansecWatch\Model\Config\Source\YesNoInherited</source_model>
+                        <comment>Adds 'self', allowing resources from the same origin (scheme, host, and port)</comment>
+                    </field>
+                </group>
+            </group>
+            <group id="fpc" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
                 <label>Full Page Cache</label>
-                <field id="mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Action after policy update</label>
                     <source_model>IntegerNet\SansecWatch\Model\Config\Source\FpcMode</source_model>
                 </field>
