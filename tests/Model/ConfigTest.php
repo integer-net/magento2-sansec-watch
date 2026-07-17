@@ -9,6 +9,7 @@ use IntegerNet\SansecWatch\Model\Directive;
 use IntegerNet\SansecWatch\Model\DirectiveFlag;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Store\Model\ScopeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +24,11 @@ class ConfigTest extends TestCase
         $scopeConfig
             ->expects($this->once())
             ->method('getValue')
-            ->with('integernet_sansecwatch/directive/script_src/inline_allowed')
+            ->with(
+                'integernet_sansecwatch/directive/script_src/inline_allowed',
+                ScopeInterface::SCOPE_STORE,
+                null,
+            )
             ->willReturn('yes');
 
         $config = new Config($scopeConfig);
@@ -39,7 +44,11 @@ class ConfigTest extends TestCase
         $scopeConfig
             ->expects($this->once())
             ->method('getValue')
-            ->with('integernet_sansecwatch/directive/img_src/self_allowed')
+            ->with(
+                'integernet_sansecwatch/directive/img_src/self_allowed',
+                ScopeInterface::SCOPE_STORE,
+                null,
+            )
             ->willReturn('no');
 
         $config = new Config($scopeConfig);
@@ -49,24 +58,33 @@ class ConfigTest extends TestCase
     }
 
     #[Test]
-    public function returnsDefaultSettingWhenDirectiveSettingIsInherited(): void
+    public function usesSameStoreIdForInheritedFallback(): void
     {
+        $storeId = 42;
         $scopeConfig = $this->createMock(ScopeConfigInterface::class);
         $scopeConfig
             ->expects($this->once())
             ->method('getValue')
-            ->with('integernet_sansecwatch/directive/style_src/inline_allowed')
+            ->with(
+                'integernet_sansecwatch/directive/style_src/inline_allowed',
+                ScopeInterface::SCOPE_STORE,
+                $storeId,
+            )
             ->willReturn('inherited');
         $scopeConfig
             ->expects($this->once())
             ->method('isSetFlag')
-            ->with('integernet_sansecwatch/directive/inline_allowed')
+            ->with(
+                'integernet_sansecwatch/directive/inline_allowed',
+                ScopeInterface::SCOPE_STORE,
+                $storeId,
+            )
             ->willReturn(true);
 
         $config = new Config($scopeConfig);
 
         /** @noinspection PhpUnhandledExceptionInspection */
-        self::assertTrue($config->getDirectiveSetting(Directive::StyleSrc, DirectiveFlag::InlineAllowed));
+        self::assertTrue($config->getDirectiveSetting(Directive::StyleSrc, DirectiveFlag::InlineAllowed, $storeId));
     }
 
     #[Test]

@@ -24,7 +24,7 @@ class SansecWatchClient
         private readonly HttpClientInterface $httpClient,
         private readonly PolicyMapper $policyMapper,
         private readonly ManagerInterface $eventManager,
-        private readonly Config $config,
+        private readonly GetApiUrlInterface $getApiUrl,
     ) {}
 
     /**
@@ -67,7 +67,7 @@ class SansecWatchClient
         $uri = str_replace(
             '{id}',
             $uuid->toRfc4122(),
-            $this->config->getApiUrl(),
+            $this->getApiUrl->getApiUrl(),
         );
 
         $options = [
