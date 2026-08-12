@@ -18,12 +18,19 @@ class FetchPolicyFactory
         DirectiveFlag::SelfAllowed,
     ];
 
-    private const array SCRIPT_STYLE_FLAGS = [
+    private const array SCRIPT_SOURCE_FLAGS = [
         DirectiveFlag::NoneAllowed,
         DirectiveFlag::SelfAllowed,
         DirectiveFlag::InlineAllowed,
         DirectiveFlag::EvalAllowed,
         DirectiveFlag::DynamicAllowed,
+        DirectiveFlag::EventHandlersAllowed,
+    ];
+
+    private const array STYLE_SOURCE_FLAGS = [
+        DirectiveFlag::NoneAllowed,
+        DirectiveFlag::SelfAllowed,
+        DirectiveFlag::InlineAllowed,
         DirectiveFlag::EventHandlersAllowed,
     ];
 
@@ -129,12 +136,12 @@ class FetchPolicyFactory
 
     private function createScriptSrcPolicy(Policy $policy): FetchPolicy
     {
-        return $this->createFetchPolicy($policy, Directive::ScriptSrc, self::SCRIPT_STYLE_FLAGS);
+        return $this->createFetchPolicy($policy, Directive::ScriptSrc, self::SCRIPT_SOURCE_FLAGS);
     }
 
     private function createStyleSrcPolicy(Policy $policy): FetchPolicy
     {
-        return $this->createFetchPolicy($policy, Directive::StyleSrc, self::SCRIPT_STYLE_FLAGS);
+        return $this->createFetchPolicy($policy, Directive::StyleSrc, self::STYLE_SOURCE_FLAGS);
     }
 
     private function createBaseUriPolicy(Policy $policy): FetchPolicy
