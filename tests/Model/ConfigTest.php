@@ -13,10 +13,61 @@ use Magento\Store\Model\ScopeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Uid\Uuid;
 
 #[CoversClass(Config::class)]
 class ConfigTest extends TestCase
 {
+    #[Test]
+    public function readsEnabledFlagAtStoreScope(): void
+    {
+        $storeId = 7;
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+        $scopeConfig
+            ->expects($this->once())
+            ->method('isSetFlag')
+            ->with(
+                'integernet_sansecwatch/general/enabled',
+                ScopeInterface::SCOPE_STORE,
+                $storeId,
+            )
+            ->willReturn(true);
+
+        self::assertTrue((new Config($scopeConfig))->isEnabled($storeId));
+    }
+
+    #[Test]
+    public function readsIdAtStoreScope(): void
+    {
+        $storeId = 7;
+        $uuid = '685769a2-38a4-4d06-a19a-67a528197f51';
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+        $scopeConfig
+            ->expects($this->once())
+            ->method('getValue')
+            ->with(
+                'integernet_sansecwatch/general/id',
+                ScopeInterface::SCOPE_STORE,
+                $storeId,
+            )
+            ->willReturn($uuid);
+
+        self::assertEquals(Uuid::fromString($uuid), (new Config($scopeConfig))->getId($storeId));
+    }
+
+    #[Test]
+    public function usesDefaultConfigWhenNoStoreIsSelected(): void
+    {
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+        $scopeConfig
+            ->expects($this->once())
+            ->method('isSetFlag')
+            ->with('integernet_sansecwatch/general/enabled')
+            ->willReturn(true);
+
+        self::assertTrue((new Config($scopeConfig))->isEnabled());
+    }
+
     #[Test]
     public function returnsExplicitDirectiveSetting(): void
     {

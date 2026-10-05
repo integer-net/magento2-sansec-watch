@@ -8,6 +8,15 @@
         </arguments>
     </type>
 
+    <type name="IntegerNet\SansecWatch\Console\Command\SansecWatchUpdateCommand">
+        <arguments>
+            <argument name="config" xsi:type="object">IntegerNet\SansecWatch\Model\Config\Proxy</argument>
+            <argument name="sansecWatchClientFactory" xsi:type="object">IntegerNet\SansecWatch\Model\SansecWatchClientFactory\Proxy</argument>
+            <argument name="policyUpdater" xsi:type="object">IntegerNet\SansecWatch\Service\PolicyUpdater\Proxy</argument>
+            <argument name="storeManager" xsi:type="object">Magento\Store\Model\StoreManagerInterface\Proxy</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">

@@ -6,15 +6,16 @@ namespace IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form;
 
 use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\Query\GetAllPolicies;
+use IntegerNet\SansecWatch\Model\StoreScopeResolver;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Override;
 
 class ListPolicies extends Field
 {
-    /** @noinspection PhpMissingClassConstantTypeInspection */
     private const int STARTING_VISIBLE_POLICIES_LIMIT = 7;
 
     protected $_template = 'IntegerNet_SansecWatch::system/config/form/list-policies.phtml';
@@ -25,7 +26,9 @@ class ListPolicies extends Field
      * @param array<array-key, mixed> $data
      */
     public function __construct(
+        private readonly RequestInterface $request,
         private readonly GetAllPolicies $getAllPolicies,
+        private readonly StoreScopeResolver $storeScopeResolver,
         Context $context,
         array $data = [],
         ?SecureHtmlRenderer $secureRenderer = null,
@@ -51,7 +54,7 @@ class ListPolicies extends Field
      */
     public function getPolicies(): array
     {
-        return $this->getAllPolicies->execute();
+        return $this->getAllPolicies->execute($this->getStoreId());
     }
 
     public function getStartingVisiblePoliciesLimit(): int
@@ -63,5 +66,10 @@ class ListPolicies extends Field
     protected function _getElementHtml(AbstractElement $element): string
     {
         return $this->_toHtml();
+    }
+
+    private function getStoreId(): ?int
+    {
+        return $this->storeScopeResolver->resolveStoreId($this->request->getParam('store'));
     }
 }

@@ -6,9 +6,11 @@ namespace IntegerNet\SansecWatch\Controller\Adminhtml\Action;
 
 use IntegerNet\SansecWatch\Model\Config;
 use IntegerNet\SansecWatch\Model\SansecWatchClientFactory;
+use IntegerNet\SansecWatch\Model\StoreScopeResolver;
 use IntegerNet\SansecWatch\Service\PolicyUpdater;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
@@ -19,10 +21,12 @@ use function __;
 class Update extends Action
 {
     public function __construct(
+        private readonly RequestInterface $request,
         private readonly JsonFactory $resultJsonFactory,
         private readonly Config $config,
         private readonly SansecWatchClientFactory $sansecWatchClientFactory,
         private readonly PolicyUpdater $policyUpdater,
+        private readonly StoreScopeResolver $storeScopeResolver,
         Context $context,
     ) {
         parent::__construct($context);
@@ -32,7 +36,16 @@ class Update extends Action
     {
         $result = $this->resultJsonFactory->create();
 
-        if (!$this->config->isEnabled()) {
+        try {
+            $storeId = $this->storeScopeResolver->resolveStoreId($this->request->getParam('store'));
+        } catch (LocalizedException $localizedException) {
+            return $result->setData([
+                'success' => false,
+                'message' => __('Could not update policies: %1', $localizedException->getMessage()),
+            ]);
+        }
+
+        if (!$this->config->isEnabled($storeId)) {
             return $result->setData([
                 'success' => true,
                 'message' => __('Please enable updates first.'),
@@ -40,13 +53,13 @@ class Update extends Action
         }
 
         try {
-            $uuid = $this->config->getId();
+            $uuid = $this->config->getId($storeId);
 
             $policies = $this->sansecWatchClientFactory
                 ->create()
                 ->fetchPolicies($uuid);
 
-            $this->policyUpdater->updatePolicies($policies);
+            $this->policyUpdater->updatePolicies($policies, storeId: $storeId);
         } catch (LocalizedException $localizedException) {
             return $result->setData([
                 'success' => false,

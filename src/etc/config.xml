@@ -5,6 +5,9 @@
             <general>
                 <enabled>0</enabled>
             </general>
+            <cron>
+                <enabled>0</enabled>
+            </cron>
             <fpc>
                 <mode>invalidate</mode>
             </fpc>

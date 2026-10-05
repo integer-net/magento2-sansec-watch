@@ -8,33 +8,40 @@
             <label>Sansec Watch</label>
             <tab>integernet</tab>
             <resource>IntegerNet_SansecWatch::configuration</resource>
-            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="0" sortOrder="10" translate="label">
                 <label>General</label>
-                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="1" canRestore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="1" canRestore="1">
                     <label>ID</label>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="policies_update" translate="note" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="policies_update" translate="note" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="1" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Buttons</frontend_model>
                 </field>
-                <field id="report_uri_check" translate="note" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="report_uri_check" translate="note" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="1" canRestore="1">
                     <label>Report URL Check</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ReportUriCheck</frontend_model>
                 </field>
-                    <field id="last_dates_checked" translate="note" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="last_dates_checked" translate="note" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="1" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\Dates</frontend_model>
                 </field>
-                <field id="policies_list" translate="note" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="policies_list" translate="note" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="1" canRestore="1">
                     <label>Update Now</label>
                     <frontend_model>IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ListPolicies</frontend_model>
+                </field>
+            </group>
+            <group id="cron" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="15" translate="label">
+                <label>Scheduled Updates</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable cron job</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
             <group id="directive" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
@@ -302,9 +309,9 @@
                     </field>
                 </group>
             </group>
-            <group id="fpc" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+            <group id="fpc" showInDefault="1" showInStore="0" showInWebsite="1" sortOrder="30" translate="label">
                 <label>Full Page Cache</label>
-                <field id="mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Action after policy update</label>
                     <source_model>IntegerNet\SansecWatch\Model\Config\Source\FpcMode</source_model>
                 </field>

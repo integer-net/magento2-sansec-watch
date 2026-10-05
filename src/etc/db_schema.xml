@@ -1,11 +1,19 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="integernet_sansecwatch_policies" engine="innodb">
-        <column xsi:type="int"     name="policy_id" identity="true"/>
-        <column xsi:type="varchar" name="directive" length="64" nullable="false"/>
-        <column xsi:type="varchar" name="host" length="255" nullable="false"/>
+        <column xsi:type="int"      name="policy_id"  identity="true"/>
+        <column xsi:type="smallint" name="store_id" nullable="true" unsigned="true" default="null"/>
+        <column xsi:type="varchar"  name="directive"  nullable="false" length="64"/>
+        <column xsi:type="varchar"  name="host"       nullable="false" length="255"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="policy_id" />
         </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="INTEGERNET_SANSEC_WATCH_STORE_ID_STORE_STORE_ID"
+                    table="integernet_sansecwatch_policies"
+                    column="store_id"
+                    referenceTable="store"
+                    referenceColumn="store_id"
+                    onDelete="CASCADE"/>
     </table>
 </schema>

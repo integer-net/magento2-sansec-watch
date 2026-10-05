@@ -85,6 +85,11 @@ class FetchPolicyFactoryTest extends TestCase
             DirectiveFlag::DynamicAllowed,
             DirectiveFlag::EventHandlersAllowed,
         ];
+        $styleSourceFlags = [
+            ...$sourceFlags,
+            DirectiveFlag::InlineAllowed,
+            DirectiveFlag::EventHandlersAllowed,
+        ];
 
         foreach ([
                      Directive::DefaultSrc,
@@ -104,6 +109,6 @@ class FetchPolicyFactoryTest extends TestCase
         }
 
         yield 'script-src' => [Directive::ScriptSrc, $scriptStyleFlags];
-        yield 'style-src' => [Directive::StyleSrc, $scriptStyleFlags];
+        yield 'style-src' => [Directive::StyleSrc, $styleSourceFlags];
     }
 }

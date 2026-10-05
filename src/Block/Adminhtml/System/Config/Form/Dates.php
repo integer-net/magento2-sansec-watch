@@ -7,9 +7,11 @@ namespace IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form;
 use DateTimeImmutable;
 use IntegerNet\SansecWatch\Mapper\SansecWatchFlagMapper;
 use IntegerNet\SansecWatch\Model\DTO\SansecWatchFlag;
+use IntegerNet\SansecWatch\Model\StoreScopeResolver;
 use IntlDateFormatter;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\FlagManager;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -27,8 +29,10 @@ class Dates extends Field
      * @param array<array-key, mixed> $data
      */
     public function __construct(
+        private readonly RequestInterface $request,
         private readonly FlagManager $flagManager,
         private readonly SansecWatchFlagMapper $flagDataMapper,
+        private readonly StoreScopeResolver $storeScopeResolver,
         private readonly TimezoneInterface $timezone,
         Context $context,
         array $data = [],
@@ -52,7 +56,8 @@ class Dates extends Field
 
     public function getLastCheckedAtDate(): string
     {
-        $lastCheckedAt = $this->getFlagData()?->lastCheckedAt;
+        $storeId = $this->getStoreId();
+        $lastCheckedAt = $this->getFlagData($storeId)?->lastCheckedAt;
 
         return $lastCheckedAt instanceof DateTimeImmutable
             ? $this->formatDateTime($lastCheckedAt)
@@ -61,7 +66,8 @@ class Dates extends Field
 
     public function getLastUpdatedAtDate(): string
     {
-        $lastUpdatedAt = $this->getFlagData()?->lastUpdatedAt;
+        $storeId = $this->getStoreId();
+        $lastUpdatedAt = $this->getFlagData($storeId)?->lastUpdatedAt;
 
         return $lastUpdatedAt instanceof DateTimeImmutable
             ? $this->formatDateTime($lastUpdatedAt)
@@ -79,11 +85,11 @@ class Dates extends Field
         return $this->timezone->formatDateTime($dateTime, timeType: IntlDateFormatter::MEDIUM);
     }
 
-    private function getFlagData(): ?SansecWatchFlag
+    private function getFlagData(?int $storeId): ?SansecWatchFlag
     {
         if (!$this->sansecWatchFlag instanceof SansecWatchFlag) {
             /** @var null|array{hash: string, lastCheckedAt: string, lastUpdatedAt: string} $flagData */
-            $flagData = $this->flagManager->getFlagData(SansecWatchFlag::CODE);
+            $flagData = $this->flagManager->getFlagData(SansecWatchFlag::getStoreCode($storeId));
 
             if ($flagData === null) {
                 return null;
@@ -93,5 +99,10 @@ class Dates extends Field
         }
 
         return $this->sansecWatchFlag;
+    }
+
+    private function getStoreId(): ?int
+    {
+        return $this->storeScopeResolver->resolveStoreId($this->request->getParam('store'));
     }
 }

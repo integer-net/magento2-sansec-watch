@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form;
 
 use IntegerNet\SansecWatch\Model\Config;
-use IntegerNet\SansecWatch\Model\Exception\InvalidConfigurationException;
+use IntegerNet\SansecWatch\Model\StoreScopeResolver;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Magento\Store\Model\ScopeInterface;
 use Override;
 use Symfony\Component\Uid\Uuid;
 
@@ -29,7 +32,9 @@ class ReportUriCheck extends Field
      * @param array<array-key, mixed> $data
      */
     public function __construct(
+        private readonly RequestInterface $request,
         private readonly Config $config,
+        private readonly StoreScopeResolver $storeScopeResolver,
         Context $context,
         array $data = [],
         ?SecureHtmlRenderer $secureRenderer = null,
@@ -77,7 +82,10 @@ class ReportUriCheck extends Field
 
     public function getReportUri(string $configPath): ?string
     {
-        $configuredReportUri = $this->_scopeConfig->getValue($configPath);
+        $storeId = $this->getStoreId();
+        $configuredReportUri = $storeId === null
+            ? $this->_scopeConfig->getValue($configPath)
+            : $this->_scopeConfig->getValue($configPath, ScopeInterface::SCOPE_STORE, $storeId);
 
         return is_string($configuredReportUri)
             ? $configuredReportUri
@@ -109,12 +117,17 @@ class ReportUriCheck extends Field
     {
         if (!$this->sansecWatchId instanceof Uuid) {
             try {
-                $this->sansecWatchId = $this->config->getId();
-            } catch (InvalidConfigurationException) {
+                $this->sansecWatchId = $this->config->getId($this->getStoreId());
+            } catch (LocalizedException) {
                 $this->sansecWatchId = null;
             }
         }
 
         return $this->sansecWatchId;
+    }
+
+    private function getStoreId(): ?int
+    {
+        return $this->storeScopeResolver->resolveStoreId($this->request->getParam('store'));
     }
 }

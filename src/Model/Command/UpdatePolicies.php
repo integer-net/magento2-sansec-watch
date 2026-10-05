@@ -24,17 +24,25 @@ class UpdatePolicies
      *
      * @throws CouldNotUpdatePoliciesException
      */
-    public function execute(array $policies): void
+    public function execute(array $policies, ?int $storeId = null): void
     {
         $connection = $this->resourceConnection->getConnection('write');
         $tableName  = $this->resourceConnection->getTableName(Config::POLICY_TABLE);
 
         try {
             $connection->beginTransaction();
-            $connection->delete($tableName);
+
+            $deleteCondition = $storeId !== null
+                ? $connection->quoteInto('store_id = ?', $storeId)
+                : 'store_id IS NULL';
+
+            $connection->delete($tableName, $deleteCondition);
 
             if ($policies !== []) {
-                $connection->insertMultiple($tableName, array_map(fn(Policy $p): array => $p->toArray(), $policies));
+                $policiesData = array_map(static fn(Policy $p): array => $p->toArray(), $policies);
+                $policiesData = array_map(static fn(array $p): array => $p + ['store_id' => $storeId], $policiesData);
+
+                $connection->insertMultiple($tableName, $policiesData);
             }
 
             $connection->commit();
@@ -42,7 +50,9 @@ class UpdatePolicies
             $connection->rollBack();
 
             throw CouldNotUpdatePoliciesException::withMessage(
-                __('Could not update policies: %1', $exception->getMessage()),
+                $storeId !== null
+                    ? __('Could not update policies for store %1: %2', $storeId, $exception->getMessage())
+                    : __('Could not update policies: %1', $exception->getMessage()),
             );
         }
     }

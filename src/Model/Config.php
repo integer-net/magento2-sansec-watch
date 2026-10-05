@@ -7,6 +7,7 @@ namespace IntegerNet\SansecWatch\Model;
 use IntegerNet\SansecWatch\Model\Exception\InvalidConfigurationException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -19,6 +20,7 @@ class Config implements GetApiUrlInterface
 
     private const string GENERAL_ENABLED                   = 'integernet_sansecwatch/general/enabled';
     private const string GENERAL_ID                        = 'integernet_sansecwatch/general/id';
+    private const string CRON_ENABLED                      = 'integernet_sansecwatch/cron/enabled';
     private const string FPC_MODE                          = 'integernet_sansecwatch/fpc/mode';
     private const string DIRECTIVE_DEFAULT_SETTING_PATTERN = 'integernet_sansecwatch/directive/%s';
     private const string DIRECTIVE_SETTING_PATTERN         = 'integernet_sansecwatch/directive/%s/%s';
@@ -29,7 +31,14 @@ class Config implements GetApiUrlInterface
 
     public function isEnabled(?int $storeId = null): bool
     {
-        return $this->scopeConfig->isSetFlag(self::GENERAL_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
+        return $storeId === null
+            ? $this->scopeConfig->isSetFlag(self::GENERAL_ENABLED)
+            : $this->scopeConfig->isSetFlag(self::GENERAL_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    public function isCronEnabled(): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::CRON_ENABLED);
     }
 
     /**
@@ -37,7 +46,9 @@ class Config implements GetApiUrlInterface
      */
     public function getId(?int $storeId = null): Uuid
     {
-        $id = (string) $this->scopeConfig->getValue(self::GENERAL_ID, ScopeInterface::SCOPE_STORE, $storeId);
+        $id = (string) ($storeId === null
+            ? $this->scopeConfig->getValue(self::GENERAL_ID)
+            : $this->scopeConfig->getValue(self::GENERAL_ID, ScopeInterface::SCOPE_STORE, $storeId));
 
         if (!Uuid::isValid($id)) {
             throw InvalidConfigurationException::fromInvalidUuid($id);
@@ -46,9 +57,9 @@ class Config implements GetApiUrlInterface
         return Uuid::fromString($id);
     }
 
-    public function getFpcMode(?int $storeId = null): FpcMode
+    public function getFpcMode(): FpcMode
     {
-        $mode = $this->scopeConfig->getValue(self::FPC_MODE, ScopeInterface::SCOPE_STORE, $storeId);
+        $mode = $this->scopeConfig->getValue(self::FPC_MODE);
 
         return FpcMode::tryFrom($mode) ?? FpcMode::None;
     }
