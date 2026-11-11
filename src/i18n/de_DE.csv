@@ -1,6 +1,14 @@
 "Update Policies Now","Regeln jetzt aktualisieren"
 "Please enable updates first.","Bitte zuerst das Modul aktivieren."
 "Could not update policies: %1","Regeln konnten nicht aktualisiert werden: %1"
+"Could not update policies for store %1: %2","Regeln für Store %1 konnten nicht aktualisiert werden: %2"
+"Invalid store identifier.","Ungültige Store-Kennung."
+"Store view ID or code. Omit to update all enabled store views.","Store-View-ID oder Code. Ohne Angabe werden alle aktivierten Store Views aktualisiert."
+"Could not find store with ID or code %1","Store mit ID oder Code %1 konnte nicht gefunden werden."
+"Store: %1 (%2)","Store: %1 (%2)"
+"Store view is inactive","Store View ist inaktiv."
+"Update is disabled for this store view","Aktualisierung ist für diese Store View deaktiviert."
+"Fetched policies:","Abgerufene Richtlinien:"
 "Response is not valid JSON: %1","Antwort ist kein valides JSON: %1"
 "Could not map response JSON to DTO: %1","Das JSON konnte nicht zu einem DTO konvertiert werden: %1"
 "Could not fetch policies from sansec watch: %1","Regeln konnten nicht von Sansec Watch abgefragt werden: %1"
@@ -23,7 +31,9 @@ Search,Suche
 "Report URI is configured correctly.","Report URI ist nicht korrekt konfiguriert."
 "Sansec Watch","Sansec Watch"
 General,Allgemein
+"Scheduled Updates","Geplante Aktualisierungen"
 Enabled,Aktiviert
+"Enable cron job","Cronjob aktivieren"
 ID,ID
 "Full Page Cache","Full Page Cache"
 "Action after policy update","Aktion nach einer Regelaktualisierung"

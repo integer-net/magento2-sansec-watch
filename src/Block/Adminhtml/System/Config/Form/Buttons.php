@@ -6,10 +6,11 @@ namespace IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form;
 
 use Exception;
 use IntegerNet\SansecWatch\Model\Config;
-use IntegerNet\SansecWatch\Model\Exception\InvalidConfigurationException;
+use IntegerNet\SansecWatch\Model\StoreScopeResolver;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Button;
 use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
@@ -27,7 +28,9 @@ class Buttons extends Field
     private ?string $htmlId = null;
 
     public function __construct(
+        private readonly RequestInterface $request,
         private readonly Config $config,
+        private readonly StoreScopeResolver $storeScopeResolver,
         Context $context,
         array $data = [],
         ?SecureHtmlRenderer $secureRenderer = null,
@@ -45,7 +48,12 @@ class Buttons extends Field
 
     public function getAjaxUrl(): string
     {
-        return $this->getUrl('integernet_sansecwatch/action/update');
+        $store = $this->request->getParam('store');
+        $parameters = $store !== null
+            ? ['store' => $store]
+            : [];
+
+        return $this->getUrl('integernet_sansecwatch/action/update', $parameters);
     }
 
     public function getHtmlId(): string
@@ -72,8 +80,8 @@ class Buttons extends Field
     public function canShowVisitDashboardAction(): bool
     {
         try {
-            $this->config->getId();
-        } catch (InvalidConfigurationException) {
+            $this->config->getId($this->getStoreId());
+        } catch (LocalizedException) {
             return false;
         }
 
@@ -82,7 +90,14 @@ class Buttons extends Field
 
     public function getVisitDashboardUrl(): string
     {
-        return sprintf(self::SANSEC_WATCH_DASHBOARD_URL, $this->config->getId());
+        try {
+            return sprintf(
+                self::SANSEC_WATCH_DASHBOARD_URL,
+                $this->config->getId($this->getStoreId()),
+            );
+        } catch (LocalizedException) {
+            return '';
+        }
     }
 
     #[Override]
@@ -101,5 +116,10 @@ class Buttons extends Field
             ->createBlock(Button::class);
 
         return $block;
+    }
+
+    private function getStoreId(): ?int
+    {
+        return $this->storeScopeResolver->resolveStoreId($this->request->getParam('store'));
     }
 }

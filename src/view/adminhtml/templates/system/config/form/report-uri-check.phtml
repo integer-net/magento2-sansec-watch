@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 use IntegerNet\SansecWatch\Block\Adminhtml\System\Config\Form\ReportUriCheck;
 use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 /** @var ReportUriCheck $block */
 /** @var Escaper $escaper */
+/** @var SecureHtmlRenderer $secureRenderer */
 
 $htmlId = $block->getHtmlId();
-?>
-<style>
-    #row_<?= $escaper->escapeHtml($htmlId) ?> label,
-    #row_<?= $escaper->escapeHtml($htmlId) ?> .note,
-    #<?= $escaper->escapeHtml($htmlId) ?>_inherit {
+$escapedHtmlId = $escaper->escapeHtml($htmlId);
+$styleString = <<<style
+    #row_{$escapedHtmlId} label,
+    #row_{$escapedHtmlId} .note,
+    #{$escapedHtmlId}_inherit {
         display: none;
     }
 
@@ -36,7 +38,9 @@ $htmlId = $block->getHtmlId();
     .report-uri-status-item {
         margin-top: 1rem;
     }
-</style>
+style;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('style', [], $styleString, false) ?>
 
 <div id="<?= $escaper->escapeHtmlAttr($htmlId) ?>_report_uri_check" style="color: #808080; margin-bottom: 0.25rem">
     <?php if ($block->canShowMessage()): ?>

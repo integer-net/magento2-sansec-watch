@@ -10,8 +10,8 @@ return ECSConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
     ])
-    ->withPhpCsFixerSets(
-        perCS30: true,
+    ->withPreparedSets(
+        perCs: true
     )
     ->withConfiguredRule(
         NativeFunctionInvocationFixer::class,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace IntegerNet\SansecWatch\Test\Model\Command;
 
 use IntegerNet\SansecWatch\Model\Command\UpdatePolicies;
+use IntegerNet\SansecWatch\Model\DTO\Policy;
 use IntegerNet\SansecWatch\Model\Exception\CouldNotUpdatePoliciesException;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
@@ -53,6 +54,35 @@ class UpdatePoliciesTest extends TestCase
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->updatePoliciesCommand->execute([]);
+    }
+
+    #[Test]
+    public function savesPolicyRowsForTheRequestedStore(): void
+    {
+        $policy = new Policy('script-src', 'store.example');
+        $this->connection
+            ->expects(self::once())
+            ->method('quoteInto')
+            ->with('store_id = ?', 12)
+            ->willReturn('store_id = 12');
+        $this->connection
+            ->expects(self::once())
+            ->method('delete')
+            ->with(self::anything(), 'store_id = 12');
+        $this->connection
+            ->expects(self::once())
+            ->method('insertMultiple')
+            ->with(
+                self::anything(),
+                [[
+                    'directive' => 'script-src',
+                    'host' => 'store.example',
+                    'store_id' => 12,
+                ]],
+            );
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->updatePoliciesCommand->execute([$policy], storeId: 12);
     }
 
     #[Test]

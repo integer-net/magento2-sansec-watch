@@ -136,7 +136,7 @@ class PolicyUpdaterTest extends TestCase
             ->expects($this->once())
             ->method('saveFlag')
             ->with(
-                SansecWatchFlag::CODE,
+                SansecWatchFlag::getStoreCode(7),
                 [
                     'hash'            => $hash,
                     'last_checked_at' => $now->format(DATE_ATOM),
@@ -152,7 +152,7 @@ class PolicyUpdaterTest extends TestCase
             clock                : $clock,
             updateFpc            : self::createStub(UpdateFpc::class),
             eventManager         : self::createStub(ManagerInterface::class),
-        ))->updatePolicies($policies);
+        ))->updatePolicies($policies, storeId: 7);
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */

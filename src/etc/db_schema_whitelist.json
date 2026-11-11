@@ -2,11 +2,15 @@
     "integernet_sansecwatch_policies": {
         "column": {
             "policy_id": true,
+            "website_id": true,
+            "store_id": true,
             "directive": true,
             "host": true
         },
         "constraint": {
-            "PRIMARY": true
+            "PRIMARY": true,
+            "INTEGERNET_SANSEC_WATCH_WEBSITE_ID_STORE_WEBSITE_WEBSITE_ID": true,
+            "INTEGERNET_SANSEC_WATCH_STORE_ID_STORE_STORE_ID": true
         }
     }
 }

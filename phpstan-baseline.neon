@@ -25,6 +25,12 @@ parameters:
 			path: src/Block/Adminhtml/System/Config/Form/ReportUriCheck.php
 
 		-
+			message: '#^Casting to int something that''s already int\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/Console/Command/SansecWatchUpdateCommand.php
+
+		-
 			message: '''
 				#^Access to property \$_authorization of deprecated class Magento\\Backend\\App\\AbstractAction\:
 				102\.0\.0 Use \\Magento\\Framework\\App\\ActionInterface
@@ -34,3 +40,27 @@ parameters:
 			identifier: property.deprecatedClass
 			count: 1
 			path: src/Controller/Adminhtml/Action/Update.php
+
+		-
+			message: '#^Casting to int something that''s already int\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/Cron/UpdatePolicies.php
+
+		-
+			message: '#^Property IntegerNet\\SansecWatch\\Model\\Query\\GetAllPolicies\:\:\$policies \(array\<string, list\<IntegerNet\\SansecWatch\\Model\\DTO\\Policy\>\>\) does not accept non\-empty\-array\<int\|string, list\<IntegerNet\\SansecWatch\\Model\\DTO\\Policy\>\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Model/Query/GetAllPolicies.php
+
+		-
+			message: '#^Casting to int something that''s already int\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/Model/SansecPolicyCollector.php
+
+		-
+			message: '#^Casting to int something that''s already int\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/Model/StoreScopeResolver.php

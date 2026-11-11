@@ -36,6 +36,9 @@ Go into your Magento 2 backend and navigate to `Shops > Configuration > Integern
 ![Magento 2: module configuration](04_config.png "module configuration")
 
 Set `Enabled` to `yes`, paste the previously copied project id into the `ID` config field and save the configuration.
+Configure these values at Default scope to share one project with all store views, or override them at an individual Store View scope. These settings are not configurable at Website scope.
+
+Scheduled policy updates are disabled by default. To enable them, set `Enable cron job` at Default scope. This global setting controls the cron job that updates policies for all enabled store views.
 
 ### Allowing or blocking new entries / policies
 

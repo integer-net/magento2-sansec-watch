@@ -12,9 +12,12 @@ bin/magento setup:upgrade
 
 ## Configuration
 
-The configuration can be found under `Stores > Configuration > IntegerNet > Sansec Watch`
-Only the sansec watch project ID is needed, which can be found in the URL, if you navigate to https://sansec.watch/d/account/list and select a project
-(e.g. `685769a2-38a4-4d06-a19a-67a528197f51`)
+The configuration can be found under `Stores > Configuration > IntegerNet > Sansec Watch`.
+Enable Sansec Watch and enter its project ID. You can find the ID in the project URL after navigating to https://sansec.watch/d/account/list and selecting a project (for example, `685769a2-38a4-4d06-a19a-67a528197f51`).
+
+Enablement and the project ID can be configured at the Default or Store View scope. A store view inherits the Default configuration unless it has its own values. These settings are not configurable at Website scope. Policies and update status are saved per store view; if a store view has no policies yet, it uses the Default policy set.
+
+Scheduled policy updates are disabled by default. To enable them, set `Enable cron job` at Default scope. This global setting controls the cron job that updates policies for all enabled store views.
 
 ## How it works
 
@@ -39,14 +42,19 @@ This will do a forced update, where rules are updated, even if the hashes of the
 ### Command Line
 
 An update can be triggered via `bin/magento integer-net:sansec-watch:update`
-This will by default only update the policies if the hashes of the old and new policies doesn't match.
+This updates policies for every enabled store view and by default only saves changes if the hashes of the old and new policies differ.
 
-A dry-run is possible by adding the `--dry-run` flag, which will only fetch and output the policies, but not update the 
-database table.
+To update only one store view, pass its ID or code with `--store-id`:
+
+```shell
+bin/magento integer-net:sansec-watch:update --store-id=default
+```
+
+A dry-run is possible by adding the `--dry-run` flag, which fetches and outputs the policies without updating the database.
 
 If an update should be force (regardless of the hashes), the `--force` flag can be added.
 
 ### Cronjob
 
-The policies are also fetched via the cronjob `integernet_sansecwatch_update`, which will run every hour (cron expression: `0 * * * *`)
-This will also only update the database, if the hashes of the old and new policies do not match 
+The policies are also fetched via the cron job `integernet_sansecwatch_update`, which runs daily at 01:05 (cron expression: `5 1 * * *`) when `Enable cron job` is enabled at Default scope.
+This will also only update the database, if the hashes of the old and new policies do not match.

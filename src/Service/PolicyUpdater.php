@@ -17,6 +17,7 @@ use Symfony\Component\Clock\ClockInterface;
 use function is_array;
 use function hash;
 use function serialize;
+use function sprintf;
 use function usort;
 
 class PolicyUpdater
@@ -35,38 +36,44 @@ class PolicyUpdater
      *
      * @throws CouldNotUpdatePoliciesException
      */
-    public function updatePolicies(array $policies, bool $force = false): void
-    {
+    public function updatePolicies(
+        array $policies,
+        bool $force = false,
+        ?int $storeId = null,
+    ): void {
         $fetchedPolicies = new FetchedPolicies($policies);
         $this->eventManager->dispatch('integernet_sansec_watch_update_policies_before', [
             'fetched_policies' => $fetchedPolicies,
+            'store_id'         => $storeId,
         ]);
         $policies = $fetchedPolicies->getPolicies();
 
         $newPoliciesHash  = $this->calculateHash($policies);
-        $existingFlagData = $this->getPoliciesFlagData();
+        $existingFlagData = $this->getPoliciesFlagData($storeId);
 
         if ($newPoliciesHash === $existingFlagData?->hash && $force === false) {
             $this->eventManager->dispatch('integernet_sansec_watch_update_policies_skipped', [
                 'fetched_policies' => $fetchedPolicies,
                 'policies_hash'    => $existingFlagData->hash,
+                'store_id'         => $storeId,
             ]);
 
-            $this->updateLastCheckedAt($existingFlagData);
+            $this->updateLastCheckedAt($existingFlagData, $storeId);
             return;
         }
 
-        $this->updatePoliciesCommand->execute($policies);
-        $this->saveNewFlagData($newPoliciesHash);
+        $this->updatePoliciesCommand->execute($policies, $storeId);
+        $this->saveNewFlagData($newPoliciesHash, $storeId);
         $this->updateFpc->execute();
 
         $this->eventManager->dispatch('integernet_sansec_watch_update_policies_after', [
             'fetched_policies'  => $fetchedPolicies,
             'new_policies_hash' => $newPoliciesHash,
+            'store_id'          => $storeId,
         ]);
     }
 
-    private function saveNewFlagData(string $hash): void
+    private function saveNewFlagData(string $hash, ?int $storeId): void
     {
         $newFlagData = new SansecWatchFlag(
             hash         : $hash,
@@ -74,10 +81,10 @@ class PolicyUpdater
             lastUpdatedAt: $this->clock->now(),
         );
 
-        $this->updateFlagData($newFlagData);
+        $this->updateFlagData($newFlagData, $storeId);
     }
 
-    private function updateLastCheckedAt(SansecWatchFlag $sansecWatchFlag): void
+    private function updateLastCheckedAt(SansecWatchFlag $sansecWatchFlag, ?int $storeId): void
     {
         $newFlagData = new SansecWatchFlag(
             hash         : $sansecWatchFlag->hash,
@@ -85,18 +92,21 @@ class PolicyUpdater
             lastUpdatedAt: $sansecWatchFlag->lastUpdatedAt,
         );
 
-        $this->updateFlagData($newFlagData);
+        $this->updateFlagData($newFlagData, $storeId);
     }
 
-    private function updateFlagData(SansecWatchFlag $flagData): void
+    private function updateFlagData(SansecWatchFlag $flagData, ?int $storeId): void
     {
-        $this->flagManager->saveFlag(SansecWatchFlag::CODE, $flagData->jsonSerialize());
+        $this->flagManager->saveFlag(
+            SansecWatchFlag::getStoreCode($storeId),
+            $flagData->jsonSerialize(),
+        );
     }
 
-    private function getPoliciesFlagData(): ?SansecWatchFlag
+    private function getPoliciesFlagData(?int $storeId): ?SansecWatchFlag
     {
         /** @var null|array{hash: string, lastCheckedAt: string, lastUpdatedAt: string} $flagData */
-        $flagData = $this->flagManager->getFlagData(SansecWatchFlag::CODE);
+        $flagData = $this->flagManager->getFlagData(SansecWatchFlag::getStoreCode($storeId));
 
         if (!is_array($flagData)) {
             return null;
