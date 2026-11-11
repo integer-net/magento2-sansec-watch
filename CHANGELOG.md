@@ -5,15 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
-
-- Added a global-only configuration option to enable scheduled policy updates, disabled by default.
-
-### Changed
-
-- Moved Sansec Watch enablement, project IDs, policy storage, and update status to store-view scope.
 
 ## [2.1.0]
 
@@ -23,11 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added website/store-scoped configuration for Sansec Watch and CSP policy settings.
 - Added a link to MDN’s Content Security Policy directive documentation in the backend configuration.
 - Added an injectable API URL provider interface for Sansec Watch-compatible services.
+- Added a global-only configuration option to enable scheduled policy updates, disabled by default.
 
 ### Changed
 
 - Generated CSP fetch policies using the configured flags for each directive instead of one global set of flags.
 - Updated the admin templates to render inline styles through Magento’s secure HTML renderer.
+- Moved Sansec Watch enablement, project IDs, policy storage, and update status to store-view scope.
 
 ## [2.0.1] - 2026-07-17
 
